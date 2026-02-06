@@ -24,35 +24,37 @@ export default function Tracks() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Honeycomb Animation
+      // 1. Hexagon Animation (Smooth & Heavy)
       gsap.fromTo(
         ".hexagon-wrapper",
-        { scale: 0.8, opacity: 0 },
+        { scale: 0.9, opacity: 0, y: 20 },
         {
           scale: 1,
           opacity: 1,
-          duration: 1.0,
+          y: 0,
+          duration: 1.2,
           stagger: { amount: 0.4, from: "center" },
-          ease: "power2.out",
+          ease: "power3.out", // "Heavy" luxury easing
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top 75%",
+            start: "top 70%",
           },
         }
       );
 
-      // 2. Details Fade Up
+      // 2. Bento Grid Animation (Fade Up)
       gsap.fromTo(
-        detailsRef.current,
-        { y: 50, opacity: 0 },
+        ".bento-card",
+        { y: 30, opacity: 0 },
         {
           y: 0,
           opacity: 1,
           duration: 1,
-          delay: 0.5,
+          stagger: 0.1,
+          ease: "power2.out",
           scrollTrigger: {
             trigger: detailsRef.current,
-            start: "top 90%",
+            start: "top 85%",
           },
         }
       );
@@ -65,92 +67,85 @@ export default function Tracks() {
       
       {/* HEADER */}
       <div className="text-center mb-10 relative z-10 px-4">
-        <span className="block font-sans text-gold text-xs md:text-sm tracking-[0.25em] uppercase mb-4 font-bold">
-          Call for Papers
+        <span className="block font-sans text-gold text-xs font-bold tracking-[0.2em] uppercase mb-4">
+          Areas of Research
         </span>
         <h2 className="font-serif text-charcoal text-5xl md:text-7xl mb-6">
           Conference Tracks
         </h2>
-        <p className="font-sans text-charcoal/60 max-w-2xl mx-auto text-lg leading-relaxed">
-          Original research submissions are invited from global researchers, academicians, and industry innovators to explore breakthroughs in AI and advanced computing.
+        <p className="font-sans text-charcoal/60 max-w-xl mx-auto text-lg leading-relaxed">
+          Exploring the frontiers of Artificial Intelligence and Advanced Computing.
         </p>
       </div>
 
       {/* HONEYCOMB CONTAINER */}
       <div className="relative w-[1100px] h-[700px] scale-[0.35] md:scale-75 lg:scale-90 origin-center z-10 mt-[-20px] mb-[-100px] md:mb-[-50px]">
-        
         {/* CENTER COLUMN */}
         <PositionHex track={TRACKS[0]} x={0} y={-230} />
         <PositionHex track={TRACKS[4]} x={0} y={0} />     
         <PositionHex track={TRACKS[8]} x={0} y={230} />   
-
         {/* LEFT COLUMN */}
         <PositionHex track={TRACKS[1]} x={-205} y={-115} /> 
         <PositionHex track={TRACKS[6]} x={-205} y={115} />  
-
         {/* RIGHT COLUMN */}
         <PositionHex track={TRACKS[2]} x={205} y={-115} />  
         <PositionHex track={TRACKS[7]} x={205} y={115} />   
-
         {/* FAR LEFT */}
         <PositionHex track={TRACKS[3]} x={-410} y={0} />    
-
         {/* FAR RIGHT */}
         <PositionHex track={TRACKS[5]} x={410} y={0} />     
-
       </div>
 
-      {/* PUBLICATION & SUBMISSION DETAILS */}
-      <div ref={detailsRef} className="relative z-20 max-w-6xl mx-auto px-6 mt-12 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* BENTO GRID DETAILS */}
+      <div ref={detailsRef} className="relative z-20 max-w-6xl mx-auto px-6 mt-16 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             
-            {/* CARD 1: Submission */}
-            <div className="p-8 bg-white/60 backdrop-blur-md border border-charcoal/5 rounded-sm">
-                <h3 className="font-serif text-2xl text-charcoal mb-4">Submission Guidelines</h3>
-                <ul className="space-y-3 font-sans text-charcoal/70 text-sm md:text-base">
-                    <li className="flex items-start gap-3">
-                        <span className="text-gold text-lg">›</span>
-                        <span>Follow the <strong>IEEE Double-Column</strong> template.</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                        <span className="text-gold text-lg">›</span>
-                        <span>Double-blind peer-review process (anonymized).</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                        <span className="text-gold text-lg">›</span>
-                        <span>Submit via <strong>Microsoft CMT</strong> portal.</span>
-                    </li>
-                </ul>
+            {/* CARD 1: SUBMISSION (Span 4) */}
+            <div className="bento-card col-span-1 md:col-span-4 bg-white border border-charcoal/5 p-8 flex flex-col justify-between hover:border-charcoal/20 transition-colors duration-300 shadow-sm">
+                <div>
+                    <h3 className="font-serif text-2xl text-charcoal mb-6">Submission</h3>
+                    <ul className="space-y-4 font-sans text-charcoal/80 text-sm">
+                        <li className="flex gap-3">
+                            <span className="text-gold font-bold">01.</span>
+                            <span>Papers must follow the <strong>IEEE Double-Column</strong> format.</span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="text-gold font-bold">02.</span>
+                            <span>Submissions follow a strict <strong>Double-Blind</strong> review process.</span>
+                        </li>
+                        <li className="flex gap-3">
+                            <span className="text-gold font-bold">03.</span>
+                            <span>Use the <strong>Microsoft CMT</strong> portal for all uploads.</span>
+                        </li>
+                    </ul>
+                </div>
+                <button className="mt-8 w-full py-3 border border-charcoal/10 text-xs font-bold uppercase tracking-widest hover:bg-charcoal hover:text-white transition-all duration-300">
+                    Download Template
+                </button>
             </div>
 
-            {/* CARD 2: Publication (Highlighted) */}
-            <div className="p-8 bg-charcoal text-cream-100 border border-charcoal rounded-sm relative overflow-hidden group">
-                <div className="absolute top-0 right-0 p-4 opacity-10 font-serif text-8xl leading-none">Sc</div>
-                <h3 className="font-serif text-2xl text-white mb-4">Publication & Indexing</h3>
-                <p className="font-sans text-cream-100/80 mb-6 text-sm md:text-base leading-relaxed">
-                    All accepted and presented papers will be submitted for indexing in <strong>Scopus</strong> and published in the conference proceedings.
+            {/* CARD 2: PUBLICATION (Span 4 - Dark Mode) */}
+            <div className="bento-card col-span-1 md:col-span-4 bg-charcoal text-cream-100 p-8 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+                <div className="absolute inset-0 bg-gold/5 scale-0 group-hover:scale-100 rounded-full blur-3xl transition-transform duration-700" />
+                
+                <span className="relative z-10 block font-serif text-5xl mb-2 text-gold">Sc</span>
+                <h3 className="relative z-10 font-serif text-2xl mb-4">Scopus Indexed</h3>
+                <p className="relative z-10 font-sans text-cream-100/70 text-sm leading-relaxed mb-6">
+                    All accepted and presented papers will be submitted for indexing in Scopus and IEEE Xplore.
                 </p>
-                <div className="inline-block px-4 py-2 border border-gold/50 rounded-full text-gold text-xs tracking-widest uppercase">
-                    Scopus Indexed
+                <div className="relative z-10 px-4 py-1 border border-white/20 rounded-full text-[10px] uppercase tracking-widest">
+                    Peer Reviewed
                 </div>
             </div>
 
-            {/* CARD 3: Deadlines */}
-            <div className="p-8 bg-white/60 backdrop-blur-md border border-charcoal/5 rounded-sm">
-                <h3 className="font-serif text-2xl text-charcoal mb-4">Key Dates</h3>
-                <div className="space-y-4 font-sans">
-                    <div className="flex justify-between items-center border-b border-charcoal/10 pb-2">
-                        <span className="text-charcoal/60 text-sm uppercase tracking-wide">Submission</span>
-                        <span className="text-charcoal font-bold">April 1st, 2026</span>
-                    </div>
-                    <div className="flex justify-between items-center border-b border-charcoal/10 pb-2">
-                        <span className="text-charcoal/60 text-sm uppercase tracking-wide">Notification</span>
-                        <span className="text-charcoal font-bold">June 1st, 2026</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                        <span className="text-charcoal/60 text-sm uppercase tracking-wide">Registration</span>
-                        <span className="text-charcoal font-bold">July 15th, 2026</span>
-                    </div>
+            {/* CARD 3: KEY DATES (Span 4) */}
+            <div className="bento-card col-span-1 md:col-span-4 bg-white border border-charcoal/5 p-8 hover:border-charcoal/20 transition-colors duration-300 shadow-sm">
+                <h3 className="font-serif text-2xl text-charcoal mb-6">Key Dates</h3>
+                <div className="space-y-0">
+                    <DateRow label="Paper Submission" date="April 1st, 2026" isLast={false} />
+                    <DateRow label="Notification" date="June 1st, 2026" isLast={false} />
+                    <DateRow label="Camera Ready" date="June 25th, 2026" isLast={false} />
+                    <DateRow label="Conference" date="Aug 2-5, 2026" isLast={true} highlight />
                 </div>
             </div>
 
@@ -163,7 +158,17 @@ export default function Tracks() {
   );
 }
 
-// ... PositionHex function remains exactly the same as before ...
+// Sub-Component for Dates
+function DateRow({ label, date, isLast, highlight = false }: { label: string, date: string, isLast: boolean, highlight?: boolean }) {
+    return (
+        <div className={`flex justify-between items-center py-3 ${!isLast ? 'border-b border-charcoal/5' : ''}`}>
+            <span className="font-sans text-xs uppercase tracking-wider text-charcoal/50">{label}</span>
+            <span className={`font-serif text-lg ${highlight ? 'text-gold' : 'text-charcoal'}`}>{date}</span>
+        </div>
+    )
+}
+
+// PositionHex component remains exactly the same as the previous "High-Visibility" version
 function PositionHex({ track, x, y }: { track: typeof TRACKS[0]; x: number; y: number }) {
   return (
     <div
@@ -174,50 +179,53 @@ function PositionHex({ track, x, y }: { track: typeof TRACKS[0]; x: number; y: n
         transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
       }}
     >
-      <div className="relative w-full h-full transition-all duration-300 ease-out group-hover:scale-[1.05] group-hover:drop-shadow-xl">
+      <div className="relative w-full h-full transition-all duration-300 ease-out group-hover:scale-[1.02] group-hover:drop-shadow-xl">
         
         <svg
           viewBox="0 0 260 225"
-          className="absolute inset-0 w-full h-full drop-shadow-md"
+          className="absolute inset-0 w-full h-full drop-shadow-sm"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
             <linearGradient id={`grad-${track.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.85" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.9" />
             </linearGradient>
           </defs>
 
+          {/* BACKGROUND */}
           <polygon
             points="65,5 195,5 255,112.5 195,220 65,220 5,112.5"
             fill={`url(#grad-${track.id})`}
             className="transition-colors duration-500"
           />
 
+          {/* BORDER */}
           <polygon
             points="65,5 195,5 255,112.5 195,220 65,220 5,112.5"
             fill="none"
             stroke={track.borderColor}
-            strokeWidth="2" 
+            strokeWidth="1.5"
             strokeOpacity="1" 
-            className="transition-all duration-300 group-hover:strokeWidth-[3]"
+            className="transition-all duration-300 group-hover:strokeWidth-[2]"
           />
         </svg>
 
+        {/* CONTENT */}
         <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center z-20">
           <span 
             className="font-serif text-5xl font-bold mb-3 transition-colors duration-300"
-            style={{ color: track.borderColor, opacity: 0.25 }}
+            style={{ color: track.borderColor, opacity: 0.15 }} // Subtle number
           >
             {track.id}
           </span>
           
-          <p className="font-sans text-xs font-bold leading-relaxed text-charcoal uppercase tracking-wider opacity-100">
+          <p className="font-sans text-[10px] md:text-xs font-bold leading-relaxed text-charcoal uppercase tracking-widest opacity-100">
             {track.title}
           </p>
 
           <div 
-            className="w-1.5 h-1.5 rounded-full mt-3 opacity-100"
+            className="w-1 h-1 rounded-full mt-3 opacity-100"
             style={{ backgroundColor: track.borderColor }}
           />
         </div>

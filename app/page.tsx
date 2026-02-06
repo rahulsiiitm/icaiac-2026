@@ -1,7 +1,12 @@
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Tracks from "./components/Tracks";
-import Keynotes from "./components/Keynotes"; // <--- Import
+import Downloads from "./components/Downloads";
+import Awards from "./components/Awards";
+import Keynotes from "./components/Keynotes";
+import Registration from "./components/Registration";
+import Partners from "./components/Partners"; // <--- Import Partners
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
@@ -9,14 +14,12 @@ export default function Home() {
       <Hero />
       <About />
       <Tracks />
-      <Keynotes /> {/* <--- Added */}
-      
-      {/* Placeholder for Next Section (Registration/Timeline) */}
-      <div className="h-screen bg-charcoal text-cream-100 flex items-center justify-center">
-        <p className="font-serif text-3xl opacity-50">
-          Next: Important Dates & Registration
-        </p>
-      </div>
+      <Downloads />
+      <Keynotes />
+      <Registration />
+      <Awards />
+      <Partners /> {/* <--- Added Media Partners here */}
+      <Footer />   {/* <--- Footer now acts as the detailed Contact Us section */}
     </main>
   );
 }
