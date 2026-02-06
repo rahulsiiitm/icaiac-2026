@@ -11,7 +11,6 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 // import Preloader from "./components/Preloader"; // <--- New Import
 import BackToTop from "./components/BackToTop"; // <--- New Import
-import { Analytics } from "@vercel/analytics/next"
 
 export default function Home() {
   return (
@@ -32,8 +31,6 @@ export default function Home() {
       <div id="venue"><Venue /></div>
       <Partners />
       <Footer />
-
-      <Analytics/>
     </main>
   );
 }
