@@ -3,6 +3,7 @@ import { Playfair_Display, Manrope } from "next/font/google";
 import { ReactLenis } from "lenis/react"; // <--- UPDATED IMPORT
 import "lenis/dist/lenis.css"; // <--- NEW CSS IMPORT
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
 
 const playfair = Playfair_Display({ 
   subsets: ["latin"], 
@@ -33,6 +34,7 @@ export default function RootLayout({
         <ReactLenis root>
           {children}
         </ReactLenis>
+        <Analytics />
       </body>
     </html>
   );
