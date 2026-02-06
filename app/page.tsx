@@ -2,24 +2,35 @@ import Hero from "./components/Hero";
 import About from "./components/About";
 import Tracks from "./components/Tracks";
 import Downloads from "./components/Downloads";
-import Awards from "./components/Awards";
 import Keynotes from "./components/Keynotes";
 import Registration from "./components/Registration";
-import Partners from "./components/Partners"; // <--- Import Partners
+import Awards from "./components/Awards";
+import Venue from "./components/Venue";
+import Partners from "./components/Partners";
 import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
+// import Preloader from "./components/Preloader"; // <--- New Import
+import BackToTop from "./components/BackToTop"; // <--- New Import
 
 export default function Home() {
   return (
     <main className="bg-cream-100 min-h-screen selection:bg-gold selection:text-white">
-      <Hero />
-      <About />
-      <Tracks />
+      {/* 1. System Components */}
+      {/* <Preloader /> */}
+      <Navbar />
+      <BackToTop />
+      
+      {/* 2. Content Sections */}
+      <div id="hero"><Hero /></div>
+      <div id="about"><About /></div>
+      <div id="tracks"><Tracks /></div>
       <Downloads />
-      <Keynotes />
-      <Registration />
+      <div id="keynotes"><Keynotes /></div>
+      <div id="registration"><Registration /></div>
       <Awards />
-      <Partners /> {/* <--- Added Media Partners here */}
-      <Footer />   {/* <--- Footer now acts as the detailed Contact Us section */}
+      <div id="venue"><Venue /></div>
+      <Partners />
+      <Footer />
     </main>
   );
 }

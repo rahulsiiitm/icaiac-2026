@@ -24,28 +24,27 @@ export default function Tracks() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // 1. Hexagon Animation (Smooth & Heavy)
+      // 1. Hexagon Animation
       gsap.fromTo(
         ".hexagon-wrapper",
-        { scale: 0.9, opacity: 0, y: 20 },
+        { scale: 0.5, opacity: 0 },
         {
           scale: 1,
           opacity: 1,
-          y: 0,
           duration: 1.2,
           stagger: { amount: 0.4, from: "center" },
-          ease: "power3.out", // "Heavy" luxury easing
+          ease: "elastic.out(1, 0.7)", // Elastic bounce for a "pop" effect
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top 70%",
+            start: "top 60%", // Trigger slightly earlier
           },
         }
       );
 
-      // 2. Bento Grid Animation (Fade Up)
+      // 2. Bento Grid Animation
       gsap.fromTo(
         ".bento-card",
-        { y: 30, opacity: 0 },
+        { y: 50, opacity: 0 },
         {
           y: 0,
           opacity: 1,
@@ -63,44 +62,52 @@ export default function Tracks() {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative w-full py-24 bg-cream-100 flex flex-col items-center overflow-hidden">
+    <section ref={containerRef} className="relative w-full py-20 bg-cream-100 flex flex-col items-center overflow-hidden">
       
       {/* HEADER */}
-      <div className="text-center mb-10 relative z-10 px-4">
+      <div className="text-center mb-8 relative z-10 px-4">
         <span className="block font-sans text-gold text-xs font-bold tracking-[0.2em] uppercase mb-4">
           Areas of Research
         </span>
-        <h2 className="font-serif text-charcoal text-5xl md:text-7xl mb-6">
+        <h2 className="font-serif text-charcoal text-4xl md:text-6xl mb-4">
           Conference Tracks
         </h2>
-        <p className="font-sans text-charcoal/60 max-w-xl mx-auto text-lg leading-relaxed">
+        <p className="font-sans text-charcoal/60 max-w-xl mx-auto text-base md:text-lg leading-relaxed">
           Exploring the frontiers of Artificial Intelligence and Advanced Computing.
         </p>
       </div>
 
-      {/* HONEYCOMB CONTAINER */}
-      <div className="relative w-[1100px] h-[700px] scale-[0.35] md:scale-75 lg:scale-90 origin-center z-10 mt-[-20px] mb-[-100px] md:mb-[-50px]">
+      {/* HONEYCOMB CONTAINER 
+          FIX: Adjusted height to 600px and removed negative margins to prevent clipping 
+      */}
+      <div className="relative w-[1100px] h-[600px] scale-[0.45] md:scale-75 lg:scale-90 origin-center z-10 my-4 md:my-0">
+        
         {/* CENTER COLUMN */}
         <PositionHex track={TRACKS[0]} x={0} y={-230} />
         <PositionHex track={TRACKS[4]} x={0} y={0} />     
         <PositionHex track={TRACKS[8]} x={0} y={230} />   
+
         {/* LEFT COLUMN */}
         <PositionHex track={TRACKS[1]} x={-205} y={-115} /> 
         <PositionHex track={TRACKS[6]} x={-205} y={115} />  
+
         {/* RIGHT COLUMN */}
         <PositionHex track={TRACKS[2]} x={205} y={-115} />  
         <PositionHex track={TRACKS[7]} x={205} y={115} />   
+
         {/* FAR LEFT */}
         <PositionHex track={TRACKS[3]} x={-410} y={0} />    
+
         {/* FAR RIGHT */}
         <PositionHex track={TRACKS[5]} x={410} y={0} />     
+
       </div>
 
       {/* BENTO GRID DETAILS */}
-      <div ref={detailsRef} className="relative z-20 max-w-6xl mx-auto px-6 mt-16 w-full">
+      <div ref={detailsRef} className="relative z-20 max-w-6xl mx-auto px-6 mt-4 w-full">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             
-            {/* CARD 1: SUBMISSION (Span 4) */}
+            {/* CARD 1: SUBMISSION */}
             <div className="bento-card col-span-1 md:col-span-4 bg-white border border-charcoal/5 p-8 flex flex-col justify-between hover:border-charcoal/20 transition-colors duration-300 shadow-sm">
                 <div>
                     <h3 className="font-serif text-2xl text-charcoal mb-6">Submission</h3>
@@ -113,10 +120,6 @@ export default function Tracks() {
                             <span className="text-gold font-bold">02.</span>
                             <span>Submissions follow a strict <strong>Double-Blind</strong> review process.</span>
                         </li>
-                        <li className="flex gap-3">
-                            <span className="text-gold font-bold">03.</span>
-                            <span>Use the <strong>Microsoft CMT</strong> portal for all uploads.</span>
-                        </li>
                     </ul>
                 </div>
                 <button className="mt-8 w-full py-3 border border-charcoal/10 text-xs font-bold uppercase tracking-widest hover:bg-charcoal hover:text-white transition-all duration-300">
@@ -124,21 +127,20 @@ export default function Tracks() {
                 </button>
             </div>
 
-            {/* CARD 2: PUBLICATION (Span 4 - Dark Mode) */}
+            {/* CARD 2: PUBLICATION */}
             <div className="bento-card col-span-1 md:col-span-4 bg-charcoal text-cream-100 p-8 flex flex-col items-center justify-center text-center relative overflow-hidden group">
                 <div className="absolute inset-0 bg-gold/5 scale-0 group-hover:scale-100 rounded-full blur-3xl transition-transform duration-700" />
-                
                 <span className="relative z-10 block font-serif text-5xl mb-2 text-gold">Sc</span>
                 <h3 className="relative z-10 font-serif text-2xl mb-4">Scopus Indexed</h3>
                 <p className="relative z-10 font-sans text-cream-100/70 text-sm leading-relaxed mb-6">
-                    All accepted and presented papers will be submitted for indexing in Scopus and IEEE Xplore.
+                    Accepted papers will be submitted for indexing in Scopus and IEEE Xplore.
                 </p>
                 <div className="relative z-10 px-4 py-1 border border-white/20 rounded-full text-[10px] uppercase tracking-widest">
                     Peer Reviewed
                 </div>
             </div>
 
-            {/* CARD 3: KEY DATES (Span 4) */}
+            {/* CARD 3: KEY DATES */}
             <div className="bento-card col-span-1 md:col-span-4 bg-white border border-charcoal/5 p-8 hover:border-charcoal/20 transition-colors duration-300 shadow-sm">
                 <h3 className="font-serif text-2xl text-charcoal mb-6">Key Dates</h3>
                 <div className="space-y-0">
@@ -158,7 +160,6 @@ export default function Tracks() {
   );
 }
 
-// Sub-Component for Dates
 function DateRow({ label, date, isLast, highlight = false }: { label: string, date: string, isLast: boolean, highlight?: boolean }) {
     return (
         <div className={`flex justify-between items-center py-3 ${!isLast ? 'border-b border-charcoal/5' : ''}`}>
@@ -168,7 +169,6 @@ function DateRow({ label, date, isLast, highlight = false }: { label: string, da
     )
 }
 
-// PositionHex component remains exactly the same as the previous "High-Visibility" version
 function PositionHex({ track, x, y }: { track: typeof TRACKS[0]; x: number; y: number }) {
   return (
     <div
@@ -179,53 +179,45 @@ function PositionHex({ track, x, y }: { track: typeof TRACKS[0]; x: number; y: n
         transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
       }}
     >
-      <div className="relative w-full h-full transition-all duration-300 ease-out group-hover:scale-[1.02] group-hover:drop-shadow-xl">
-        
+      <div className="relative w-full h-full transition-all duration-300 ease-out group-hover:scale-[1.05] group-hover:drop-shadow-xl">
         <svg
           viewBox="0 0 260 225"
-          className="absolute inset-0 w-full h-full drop-shadow-sm"
+          className="absolute inset-0 w-full h-full drop-shadow-md"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
             <linearGradient id={`grad-${track.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
               <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.85" />
             </linearGradient>
           </defs>
-
-          {/* BACKGROUND */}
           <polygon
             points="65,5 195,5 255,112.5 195,220 65,220 5,112.5"
             fill={`url(#grad-${track.id})`}
             className="transition-colors duration-500"
           />
-
-          {/* BORDER */}
           <polygon
             points="65,5 195,5 255,112.5 195,220 65,220 5,112.5"
             fill="none"
             stroke={track.borderColor}
             strokeWidth="1.5"
             strokeOpacity="1" 
-            className="transition-all duration-300 group-hover:strokeWidth-[2]"
+            className="transition-all duration-300 group-hover:strokeWidth-[3]"
           />
         </svg>
 
-        {/* CONTENT */}
         <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center z-20">
           <span 
             className="font-serif text-5xl font-bold mb-3 transition-colors duration-300"
-            style={{ color: track.borderColor, opacity: 0.15 }} // Subtle number
+            style={{ color: track.borderColor, opacity: 0.15 }}
           >
             {track.id}
           </span>
-          
           <p className="font-sans text-[10px] md:text-xs font-bold leading-relaxed text-charcoal uppercase tracking-widest opacity-100">
             {track.title}
           </p>
-
           <div 
-            className="w-1 h-1 rounded-full mt-3 opacity-100"
+            className="w-1.5 h-1.5 rounded-full mt-3 opacity-100"
             style={{ backgroundColor: track.borderColor }}
           />
         </div>
