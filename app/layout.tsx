@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Playfair_Display, Manrope } from "next/font/google";
 import { ReactLenis } from "lenis/react"; // <--- UPDATED IMPORT
 import "lenis/dist/lenis.css"; // <--- NEW CSS IMPORT
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next"
 
