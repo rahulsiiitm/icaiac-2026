@@ -4,17 +4,16 @@ import { ReactLenis } from "lenis/react"; // <--- UPDATED IMPORT
 import "lenis/dist/lenis.css"; // <--- NEW CSS IMPORT
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/next"
 
-const playfair = Playfair_Display({ 
-  subsets: ["latin"], 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
   variable: "--font-playfair",
   display: 'swap',
 });
 
-const manrope = Manrope({ 
-  subsets: ["latin"], 
-  variable: "--font-manrope", 
+const manrope = Manrope({
+  subsets: ["latin"],
+  variable: "--font-manrope",
   display: 'swap',
 });
 
@@ -35,6 +34,7 @@ export default function RootLayout({
         <ReactLenis root>
           {children}
         </ReactLenis>
+
         <Analytics />
       </body>
     </html>
