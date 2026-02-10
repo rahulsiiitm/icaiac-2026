@@ -1,11 +1,30 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
-// Placeholder logos - In a real project, you would replace these with real partner logos
+// Real Partners Data
 const PARTNERS = [
-  "Partner One", "TechDaily", "AI World", "Science Today", 
-  "Innovate 360", "Future Labs", "DeepMind Daily", "ComputeX"
+  { 
+    name: "Conference Alert", 
+    url: "https://www.conferencealert.com/", 
+    logo: "/images/partners/conference-alert.png" 
+  },
+  { 
+    name: "Conference Alerts Net", 
+    url: "https://conferencealerts.net/", 
+    logo: "/images/partners/conference-alerts-net.png" 
+  },
+  { 
+    name: "Conference In Europe", 
+    url: "https://www.conferenceineurope.org/", 
+    logo: "/images/partners/conference-in-europe.png" 
+  },
+  { 
+    name: "Conference Alerts In", 
+    url: "https://www.conferencealerts.in/", 
+    logo: "/images/partners/conference-alerts-in.png" 
+  }
 ];
 
 export default function Partners() {
@@ -22,26 +41,36 @@ export default function Partners() {
       </div>
 
       {/* MARQUEE CONTAINER */}
-      <div className="relative w-full flex overflow-hidden mask-linear-fade">
+      <div className="relative w-full flex overflow-hidden mask-linear-fade group">
         
-        {/* SCROLLING TRACK (Duplicated for seamless loop) */}
-        <div className="flex animate-marquee whitespace-nowrap">
-          {[...PARTNERS, ...PARTNERS].map((partner, i) => (
-            <div key={i} className="mx-8 md:mx-16 flex items-center justify-center opacity-40 hover:opacity-100 transition-opacity duration-300 cursor-pointer">
-              {/* Replacing Image with stylized text for now. 
-                  If you have logos, use <Image src="..." /> here. 
-              */}
-              <span className="font-serif text-3xl md:text-5xl text-charcoal whitespace-nowrap">
-                {partner}
-              </span>
+        {/* SCROLLING TRACK */}
+        {/* Added 'group-hover:paused' logic via CSS below */}
+        <div className="flex animate-marquee whitespace-nowrap items-center">
+          {/* Duplicated 4 times to ensure smooth loop */}
+          {[...PARTNERS, ...PARTNERS, ...PARTNERS, ...PARTNERS].map((partner, i) => (
+            <div key={i} className="mx-12 md:mx-20 flex items-center justify-center opacity-50 hover:opacity-100 transition-opacity duration-300 grayscale hover:grayscale-0">
+              <Link href={partner.url} target="_blank" rel="noopener noreferrer">
+                 <div className="relative w-48 h-24 cursor-pointer">
+                    <Image 
+                        src={partner.logo} 
+                        alt={partner.name} 
+                        fill 
+                        className="object-contain"
+                    />
+                 </div>
+              </Link>
             </div>
           ))}
         </div>
 
-        {/* CSS for the Marquee Animation */}
+        {/* CSS for Animation & Pause on Hover */}
         <style jsx>{`
           .animate-marquee {
-            animation: marquee 20s linear infinite;
+            animation: marquee 30s linear infinite;
+          }
+          /* This stops the animation when you hover over the track */
+          .animate-marquee:hover {
+            animation-play-state: paused;
           }
           @keyframes marquee {
             0% { transform: translateX(0); }
@@ -49,6 +78,7 @@ export default function Partners() {
           }
           .mask-linear-fade {
              mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+             -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
           }
         `}</style>
       </div>

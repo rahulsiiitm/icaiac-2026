@@ -56,7 +56,7 @@ export default function Venue() {
       >
         <div className="parallax-bg relative w-full h-[120%] -top-[10%]">
           <Image
-            src="/images/campus-hero.jpg"
+            src="/images/cllg4.jpeg"
             alt="IIIT Manipur Campus"
             fill
             className="object-cover grayscale" 
@@ -78,15 +78,15 @@ export default function Venue() {
           className="w-full h-full"
           style={{ 
             // The "MapSection" Dark Mode Filter
-            filter: "grayscale(100%) invert(92%) contrast(0.83) brightness(1.1)",
+            filter: "grayscale(0%) invert(0%) contrast(1) brightness(0.8)",
             border: 0 
           }}
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3621.688220626607!2d93.94435967605963!3d24.806296147413695!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37492790204620f3%3A0x6335193910543224!2sIIIT%20Manipur%20City%20Campus!5e0!3m2!1sen!2sin!4v1707204987023!5m2!1sen!2sin" // Replace with valid embed URL
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3658.318255140003!2d93.93708297537037!3d24.843225077940513!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37492785030cfa5d%3A0xa9e85369c96babc0!2sIndian%20Institute%20of%20Information%20Technology%20Manipur!5e1!3m2!1sen!2sin!4v1770751425275!5m2!1sen!2sin" // Replace with valid embed URL
           title="IIIT Manipur Map"
         ></iframe>
         
         {/* Gradient Edge to blend with footer/header */}
-        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-charcoal/80 via-transparent to-charcoal/80" />
+        <div className="absolute inset-0 pointer-events-none bg-linear-to-t from-charcoal/80 via-transparent to-charcoal/80" />
       </div>
 
       {/* ==================== LAYER 3: FLOATING CONTROL CARD ==================== */}

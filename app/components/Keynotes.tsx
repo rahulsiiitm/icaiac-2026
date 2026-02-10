@@ -11,22 +11,22 @@ const SPEAKERS = [
   {
     name: "Prof. Jey Veeraswamy",
     role: "University of Texas at Dallas",
-    image: "/images/speaker-1.jpg", // Placeholder path
+    image: "/images/speaker1.png", // Placeholder path
   },
   {
     name: "Prof. Tamil Laxman",
     role: "University of Texas at Dallas",
-    image: "/images/speaker-2.jpg",
+    image: "/images/speaker2.png",
   },
   {
     name: "Prof. Virach Sornlertlamvanich",
     role: "Musashino University, Japan",
-    image: "/images/speaker-3.jpg",
+    image: "/images/speaker3.png",
   },
   {
     name: "Prof. Naveen Garg",
     role: "IIT Delhi, India",
-    image: "/images/speaker-4.jpg",
+    image: "/images/speaker4.webp",
   },
 ];
 
@@ -77,7 +77,7 @@ export default function Keynotes() {
             className="speaker-card group relative flex flex-col items-center text-center cursor-pointer"
           >
             {/* PORTRAIT CONTAINER */}
-            <div className="relative w-full aspect-[3/4] overflow-hidden mb-8 bg-charcoal/5">
+            <div className="relative w-full aspect-3/4 overflow-hidden mb-8 bg-charcoal/5">
               {/* Image Layer */}
               <div className="absolute inset-0 transition-all duration-700 ease-out group-hover:scale-105">
                 <Image
@@ -89,7 +89,7 @@ export default function Keynotes() {
               </div>
 
               {/* Overlay Gradient (subtle darkening at bottom for text readability if needed) */}
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-linear-to-t from-charcoal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
               {/* Gold Border Reveal */}
               <div className="absolute inset-0 border border-gold/0 group-hover:border-gold/50 transition-colors duration-500 scale-95 group-hover:scale-100" />

@@ -1,12 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const navRef = useRef<HTMLDivElement>(null); // Ref to track the nav container
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setActiveDropdown(null);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   
   // We use this to close the menu when a link is clicked
   const handleLinkClick = () => {
@@ -36,7 +51,10 @@ export default function Navbar() {
     <>
       {/* DESKTOP NAV */}
       <nav className="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-center pointer-events-none">
-        <div className="pointer-events-auto bg-charcoal/90 backdrop-blur-md border border-white/10 rounded-full px-8 py-3 flex items-center gap-8 shadow-2xl">
+        <div 
+            ref={navRef} // Attach ref here
+            className="pointer-events-auto bg-charcoal/90 backdrop-blur-md border border-white/10 rounded-full px-8 py-3 flex items-center gap-8 shadow-2xl"
+        >
           
           <Link 
             href="/" 

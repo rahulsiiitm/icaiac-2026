@@ -29,16 +29,16 @@ export default function Registration() {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         ".price-card",
-        { y: 50, opacity: 0 },
+        { y: 30, opacity: 0 }, // Reduced Y distance for snappier feel
         {
           y: 0,
           opacity: 1,
-          duration: 1,
-          stagger: 0.2,
+          duration: 0.8, // Faster duration
+          stagger: 0.15,
           ease: "power3.out",
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "top 80%",
+            start: "top 85%", // Triggers sooner (when top of section hits bottom 15% of screen)
           },
         }
       );
@@ -50,7 +50,6 @@ export default function Registration() {
     <section ref={containerRef} className="relative w-full py-32 bg-charcoal text-cream-100 overflow-hidden">
       
       {/* BACKGROUND DECOR */}
-      {/* A dark, moody version of the grain texture */}
       <div className="absolute inset-0 opacity-10 bg-[url('/noise.png')] pointer-events-none" />
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
 
@@ -94,7 +93,6 @@ export default function Registration() {
             title="Student Author"
             prices={PRICING[currency].student}
             features={["Full Conference Access", "Paper Presentation", "Conference Kit", "Certificate"]}
-            delay={0}
           />
 
           {/* CARD 2: PROFESSIONAL (Featured) */}
@@ -102,7 +100,6 @@ export default function Registration() {
             title="Faculty & Industry"
             prices={PRICING[currency].professional}
             features={["Full Conference Access", "Paper Presentation", "Networking Gala", "Scopus Publication"]}
-            delay={0.1}
             featured
           />
 
@@ -111,7 +108,6 @@ export default function Registration() {
             title="Non-Author"
             prices={PRICING[currency].attendee}
             features={["Access to Sessions", "Networking Events", "Certificate", "No Presentation"]}
-            delay={0.2}
           />
 
         </div>
@@ -128,21 +124,21 @@ export default function Registration() {
 }
 
 // SUB-COMPONENT: The "Pass" Card
-function PricingCard({ title, prices, features, delay, featured = false }: any) {
+function PricingCard({ title, prices, features, featured = false }: any) {
   return (
-    <div className={`price-card relative p-8 md:p-10 flex flex-col justify-between group
+    <div className={`price-card relative p-8 md:p-10 flex flex-col justify-start group
       ${featured ? 'bg-cream-100 text-charcoal border-none' : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'}
-      transition-all duration-500 rounded-sm overflow-hidden
+      transition-all duration-500 rounded-sm overflow-hidden h-full
     `}>
       
       {/* Decorative 'Holographic' Gradient for non-featured cards */}
       {!featured && (
-        <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
       )}
 
       <div>
         <h3 className={`font-serif text-3xl mb-2 ${featured ? 'text-charcoal' : 'text-white'}`}>{title}</h3>
-        <div className="w-12 h-[1px] bg-gold mb-8" />
+        <div className="w-12 h-px bg-gold mb-8" />
 
         {/* PRICES */}
         <div className="space-y-6 mb-10">
@@ -159,22 +155,13 @@ function PricingCard({ title, prices, features, delay, featured = false }: any) 
         {/* FEATURES */}
         <ul className="space-y-3">
           {features.map((item: string, i: number) => (
-            <li key={i} className="flex items-center gap-3 text-sm font-sans opacity-80">
-              <span className={`w-1.5 h-1.5 rounded-full ${featured ? 'bg-gold' : 'bg-white/40'}`} />
+            <li key={i} className="flex items-start gap-3 text-sm font-sans opacity-80">
+              <span className={`mt-1.5 w-1.5 h-1.5 rounded-full shrink-0 ${featured ? 'bg-gold' : 'bg-white/40'}`} />
               {item}
             </li>
           ))}
         </ul>
       </div>
-
-      {/* CTA BUTTON */}
-      <button className={`mt-10 w-full py-4 text-xs font-bold uppercase tracking-[0.2em] border transition-all duration-300
-        ${featured 
-          ? 'border-charcoal text-charcoal hover:bg-charcoal hover:text-cream-100' 
-          : 'border-white/20 text-white hover:bg-white hover:text-charcoal'}
-      `}>
-        Register Now
-      </button>
 
     </div>
   );
