@@ -1,13 +1,5 @@
 @import "tailwindcss";
-
-/* Tailwind v4 requires explicitly loading the config 
-   if you are using a tailwind.config.ts file. 
-*/
 @config "../tailwind.config.ts";
-
-/* Theme Variables 
-   (These ensure our custom colors map correctly if v4 needs fallbacks)
-*/
 @theme {
   --color-cream-100: #F9F3E8;
   --color-charcoal: #1A2E2E;

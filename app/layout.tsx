@@ -1,25 +1,58 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Manrope } from "next/font/google";
-import { ReactLenis } from "lenis/react"; // <--- UPDATED IMPORT
-import "lenis/dist/lenis.css"; // <--- NEW CSS IMPORT
-import { Analytics } from "@vercel/analytics/next";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
+const playfair = Playfair_Display({ 
+  subsets: ["latin"], 
+  variable: "--font-serif",
   display: 'swap',
 });
 
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
+const inter = Inter({ 
+  subsets: ["latin"], 
+  variable: "--font-sans",
   display: 'swap',
 });
 
 export const metadata: Metadata = {
+  // --- FIX: Added metadataBase to resolve relative image paths ---
+  metadataBase: new URL("https://icaiac.iiitmanipur.ac.in"),
+
   title: "ICAIAC 2026 | IIIT Manipur",
   description: "1st International Conference on Artificial Intelligence and Advanced Computing",
+  keywords: ["ICAIAC", "AI Conference", "IIIT Manipur", "Machine Learning", "Computer Science Conference"],
+  
+  // 1. Browser Tab Icons
+  icons: {
+    icon: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
+
+  // 2. Open Graph (Facebook, LinkedIn, WhatsApp)
+  openGraph: {
+    title: "ICAIAC 2026 | IIIT Manipur",
+    description: "Join us for the 1st International Conference on AI & Advanced Computing.",
+    url: "https://icaiac.iiitmanipur.ac.in",
+    siteName: "ICAIAC 2026",
+    images: [
+      {
+        url: "/images/logo.png",
+        width: 800,
+        height: 600,
+        alt: "ICAIAC 2026 Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+
+  // 3. Twitter Card
+  twitter: {
+    card: "summary_large_image",
+    title: "ICAIAC 2026 | IIIT Manipur",
+    description: "International Conference on Artificial Intelligence and Advanced Computing",
+    images: ["/images/logo.png"],
+  },
 };
 
 export default function RootLayout({
@@ -28,14 +61,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfair.variable} ${manrope.variable}`}>
-      <body className="bg-cream-100 text-charcoal antialiased selection:bg-gold selection:text-white">
-        {/* The 'root' prop is required to catch the main scroll */}
-        <ReactLenis root>
-          {children}
-        </ReactLenis>
-
-        <Analytics />
+    <html lang="en" className="scroll-smooth">
+      <body className={`${playfair.variable} ${inter.variable} bg-charcoal text-white antialiased`}>
+        {children}
       </body>
     </html>
   );

@@ -53,8 +53,7 @@ export default function Hero() {
           className="object-cover opacity-50 grayscale"
           priority
         />
-        {/* Gradient Overlay using Charcoal (Green Shade) */}
-        <div className="absolute inset-0 bg-linear-to-b from-charcoal/90 via-charcoal/60 to-charcoal/90" />
+        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/90 via-charcoal/60 to-charcoal/90" />
       </div>
 
       {/* CONTENT */}
@@ -96,26 +95,28 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* BUTTONS */}
+        {/* BUTTONS - OPTIMIZED FOR MOBILE */}
         <div
           ref={buttonsRef}
-          className="mt-12 flex flex-col sm:flex-row gap-6 justify-center opacity-0"
+          className="mt-12 flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center opacity-0 w-full sm:w-auto px-4 sm:px-0"
         >
           {/* Primary Action: Gold on Charcoal */}
+          {/* Removed <button> tag, applied directly to Link */}
           <Link 
-            href="/#tracks"
-            className="group relative px-8 py-4 bg-gold text-charcoal font-semibold tracking-wide overflow-hidden shadow-xl hover:shadow-2xl transition-all inline-block"
+            href="#tracks"
+            className="group relative w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 bg-gold text-charcoal font-semibold tracking-wide overflow-hidden shadow-xl hover:shadow-2xl transition-all inline-block cursor-pointer text-center"
           >
-              <span className="relative z-10 flex items-center gap-2 text-xs uppercase tracking-[0.2em]">
+              <span className="relative z-10 flex items-center justify-center gap-2 text-[10px] sm:text-xs uppercase tracking-[0.2em]">
                 Submit Your Paper
               </span>
               <div className="absolute inset-0 bg-white transform translate-y-full transition-transform duration-300 group-hover:translate-y-0 z-0"></div>
           </Link>
 
           {/* Secondary Action: White Outline */}
+          {/* Removed <button> tag, applied directly to Link */}
           <Link 
-            href="/#registration"
-            className="px-8 py-4 border border-white/20 text-white hover:bg-white hover:text-charcoal transition-colors duration-300 text-xs uppercase tracking-[0.2em] font-bold inline-block"
+            href="#registration"
+            className="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 border border-white/20 text-white hover:bg-white hover:text-charcoal transition-colors duration-300 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold inline-block cursor-pointer text-center"
           >
               Registration Info
           </Link>

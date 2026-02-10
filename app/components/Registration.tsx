@@ -48,13 +48,13 @@ export default function Registration() {
 
   return (
     <section ref={containerRef} className="relative w-full py-32 bg-charcoal text-cream-100 overflow-hidden">
-      
+
       {/* BACKGROUND DECOR */}
-      <div className="absolute inset-0 opacity-10 bg-[url('/noise.png')] pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute inset-0 opacity-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 w-150 h-150 bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 flex flex-col items-center">
-        
+
         {/* HEADER */}
         <div className="text-center mb-16">
           <span className="block font-sans text-gold text-xs font-bold tracking-[0.2em] uppercase mb-6">
@@ -63,22 +63,20 @@ export default function Registration() {
           <h2 className="font-serif text-5xl md:text-7xl mb-8 text-white">
             Registration
           </h2>
-          
+
           {/* CURRENCY TOGGLE */}
           <div className="inline-flex items-center bg-white/5 backdrop-blur-md rounded-full p-1 border border-white/10">
             <button
               onClick={() => setCurrency("INR")}
-              className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${
-                currency === "INR" ? "bg-gold text-charcoal shadow-lg" : "text-white/50 hover:text-white"
-              }`}
+              className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${currency === "INR" ? "bg-gold text-charcoal shadow-lg" : "text-white/50 hover:text-white"
+                }`}
             >
               INDIA / SAARC
             </button>
             <button
               onClick={() => setCurrency("USD")}
-              className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${
-                currency === "USD" ? "bg-gold text-charcoal shadow-lg" : "text-white/50 hover:text-white"
-              }`}
+              className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${currency === "USD" ? "bg-gold text-charcoal shadow-lg" : "text-white/50 hover:text-white"
+                }`}
             >
               INTERNATIONAL
             </button>
@@ -87,7 +85,7 @@ export default function Registration() {
 
         {/* CARDS GRID */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-          
+
           {/* CARD 1: STUDENT */}
           <PricingCard
             title="Student Author"
@@ -114,7 +112,7 @@ export default function Registration() {
 
         {/* FOOTNOTE */}
         <p className="mt-16 font-sans text-white/30 text-sm max-w-2xl text-center leading-relaxed">
-          *Registration fee covers conference kit, lunch, and high tea. 
+          *Registration fee covers conference kit, lunch, and high tea.
           Accommodation is not included. One author must register to ensure paper publication.
         </p>
 
@@ -130,7 +128,7 @@ function PricingCard({ title, prices, features, featured = false }: any) {
       ${featured ? 'bg-cream-100 text-charcoal border-none' : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'}
       transition-all duration-500 rounded-sm overflow-hidden h-full
     `}>
-      
+
       {/* Decorative 'Holographic' Gradient for non-featured cards */}
       {!featured && (
         <div className="absolute inset-0 bg-linear-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />

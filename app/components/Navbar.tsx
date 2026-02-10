@@ -2,12 +2,13 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const navRef = useRef<HTMLDivElement>(null); // Ref to track the nav container
+  const navRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -16,14 +17,10 @@ export default function Navbar() {
         setActiveDropdown(null);
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   
-  // We use this to close the menu when a link is clicked
   const handleLinkClick = () => {
     setIsOpen(false);
     setActiveDropdown(null);
@@ -33,7 +30,7 @@ export default function Navbar() {
     { name: "ABOUT", href: "/#about", hasDropdown: false },
     { 
       name: "COMMITTEE", 
-      href: "#", // Placeholder
+      href: "#", 
       hasDropdown: true,
       submenu: [
         { name: "Organizing Committee", href: "/committee/organizing" },
@@ -52,23 +49,33 @@ export default function Navbar() {
       {/* DESKTOP NAV */}
       <nav className="fixed top-0 left-0 w-full z-50 px-6 py-4 flex justify-center pointer-events-none">
         <div 
-            ref={navRef} // Attach ref here
-            className="pointer-events-auto bg-charcoal/90 backdrop-blur-md border border-white/10 rounded-full px-8 py-3 flex items-center gap-8 shadow-2xl"
+          ref={navRef}
+          className="pointer-events-auto bg-charcoal/90 backdrop-blur-md border border-white/10 rounded-full pl-6 pr-8 py-3 flex items-center gap-8 shadow-2xl"
         >
           
           <Link 
             href="/" 
-            className="font-serif text-white font-bold text-lg cursor-pointer"
+            className="flex items-center gap-3 cursor-pointer group"
             onClick={handleLinkClick}
           >
-            ICAIAC <span className="text-gold">26</span>
+            {/* Logo */}
+            <div className="relative w-8 h-8 md:w-10 md:h-10 transition-transform duration-300 group-hover:scale-110">
+                <Image 
+                    src="/images/logo.png" 
+                    alt="ICAIAC Logo" 
+                    fill 
+                    className="object-contain"
+                />
+            </div>
+            <span className="font-serif text-white font-bold text-lg">
+              ICAIAC <span className="text-gold">26</span>
+            </span>
           </Link>
 
           <div className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <div key={link.name} className="relative">
                 {link.hasDropdown ? (
-                  // DROPDOWN TOGGLE BUTTON
                   <button
                     onClick={() => setActiveDropdown(activeDropdown === link.name ? null : link.name)}
                     className="group flex items-center gap-1 font-sans text-[11px] font-bold uppercase tracking-widest text-white/80 hover:text-gold transition-colors duration-300"
@@ -84,7 +91,6 @@ export default function Navbar() {
                     </svg>
                   </button>
                 ) : (
-                  // STANDARD LINK (Uses Next.js Link)
                   <Link
                     href={link.href}
                     onClick={handleLinkClick}
@@ -94,13 +100,13 @@ export default function Navbar() {
                   </Link>
                 )}
 
-                {/* DROPDOWN MENU */}
+                {/* Dropdown */}
                 {link.hasDropdown && activeDropdown === link.name && (
                   <div className="absolute top-full mt-2 bg-charcoal/95 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden min-w-[200px] shadow-xl">
                     {link.submenu?.map((item) => (
                       <Link
                         key={item.name}
-                        href={item.href} // This links to the actual pages now
+                        href={item.href}
                         onClick={handleLinkClick}
                         className="block w-full text-left px-4 py-3 font-sans text-[11px] font-medium tracking-wide text-white/80 hover:text-gold hover:bg-white/5 transition-colors"
                       >
@@ -114,7 +120,7 @@ export default function Navbar() {
           </div>
 
           <button 
-            className="lg:hidden text-white font-sans text-xs font-bold tracking-widest"
+            className="lg:hidden text-white font-sans text-xs font-bold tracking-widest ml-4"
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? "CLOSE" : "MENU"}
@@ -124,14 +130,24 @@ export default function Navbar() {
 
       {/* MOBILE MENU */}
       <div className={`fixed inset-0 z-40 bg-charcoal transition-transform duration-500 ease-in-out ${isOpen ? "translate-y-0" : "-translate-y-full"}`}>
-        <div className="flex flex-col items-center justify-center h-full gap-8 p-4">
+        <div className="flex flex-col items-center justify-center h-full gap-6 p-4 overflow-y-auto">
           
+          {/* Mobile Menu Logo */}
+          <div className="relative w-16 h-16 mb-2 animate-pulse">
+            <Image 
+                src="/images/logo.png" 
+                alt="ICAIAC Logo" 
+                fill 
+                className="object-contain"
+            />
+          </div>
+
           {/* Explicit Mobile Links for Committee */}
-          <Link href="/committee/organizing" className="mobile-link" onClick={handleLinkClick}>Organizing Committee</Link>
-          <Link href="/committee/advisory" className="mobile-link" onClick={handleLinkClick}>Advisory Committee</Link>
-          <Link href="/committee/technical" className="mobile-link" onClick={handleLinkClick}>Technical Committee</Link>
+          <Link href="/committee/organizing" className="font-serif text-2xl text-cream-100 hover:text-gold transition-colors text-center" onClick={handleLinkClick}>Organizing Committee</Link>
+          <Link href="/committee/advisory" className="font-serif text-2xl text-cream-100 hover:text-gold transition-colors text-center" onClick={handleLinkClick}>Advisory Committee</Link>
+          <Link href="/committee/technical" className="font-serif text-2xl text-cream-100 hover:text-gold transition-colors text-center" onClick={handleLinkClick}>Technical Committee</Link>
           
-          <div className="w-12 h-[1px] bg-white/10 my-4" />
+          <div className="w-12 h-[1px] bg-white/10 my-2" />
 
           {navLinks.map((link) => (
             !link.hasDropdown && (
@@ -139,20 +155,22 @@ export default function Navbar() {
                 key={link.name}
                 href={link.href}
                 onClick={handleLinkClick}
-                className="mobile-link"
+                className="font-serif text-3xl md:text-4xl text-cream-100 hover:text-gold transition-colors text-center"
               >
                 {link.name}
               </Link>
             )
           ))}
+
+          {/* Close Button */}
+          <button 
+            className="mt-8 text-white/50 text-xs font-bold tracking-widest uppercase hover:text-gold transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
+            Close Menu
+          </button>
         </div>
       </div>
-      
-      <style jsx>{`
-        .mobile-link {
-            @apply font-serif text-3xl md:text-4xl text-cream-100 hover:text-gold transition-colors text-center;
-        }
-      `}</style>
     </>
   );
 }

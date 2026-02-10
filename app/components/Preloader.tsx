@@ -2,73 +2,70 @@
 
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import Image from "next/image"; // Import Image
 
 export default function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [complete, setComplete] = useState(false);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const [isActive, setIsActive] = useState(true);
 
   useEffect(() => {
+    if (!isActive) return;
+
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
-        onComplete: () => setComplete(true),
+        onComplete: () => setIsActive(false),
       });
 
-      // 1. Initial State
-      tl.set(".preloader-text", { y: 100, opacity: 0 });
-
-      // 2. Animate Text In
-      tl.to(".preloader-text", {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        stagger: 0.2,
-        ease: "power3.out",
-      })
-      .to(".preloader-text", {
-        y: -100,
-        opacity: 0,
+      // 1. Logo Reveal & Pulse
+      tl.fromTo(
+        logoRef.current,
+        { scale: 0.8, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1, ease: "power2.out" }
+      )
+      .to(logoRef.current, {
+        scale: 1.1,
         duration: 0.8,
-        stagger: 0.1,
-        ease: "power3.in",
-        delay: 0.5,
-      });
-
-      // 3. Slide the Curtain Up
-      tl.to(containerRef.current, {
+        yoyo: true,
+        repeat: 1,
+        ease: "sine.inOut"
+      })
+      
+      // 2. Slide Up Away
+      .to(containerRef.current, {
         yPercent: -100,
-        duration: 1.2,
-        ease: "power4.inOut",
+        duration: 0.8,
+        ease: "power3.inOut",
+        delay: 0.2
       });
 
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isActive]);
 
-  if (complete) return null; // Unmount after animation to save performance
+  if (!isActive) return null;
 
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] bg-charcoal flex items-center justify-center pointer-events-none"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-charcoal"
     >
-      <div className="overflow-hidden text-center px-4">
-        {/* The Animated Text Lines */}
-        <div className="overflow-hidden mb-2">
-            <h1 className="preloader-text font-serif text-3xl md:text-5xl text-white leading-tight">
-              Artificial Intelligence
-            </h1>
+      {/* Logo Container */}
+      <div ref={logoRef} className="relative w-32 h-32 md:w-48 md:h-48 flex flex-col items-center gap-4">
+        <div className="relative w-full h-full">
+            <Image 
+                src="/images/logo.png" 
+                alt="ICAIAC Loading" 
+                fill 
+                className="object-contain"
+                priority
+            />
         </div>
-        <div className="overflow-hidden mb-2">
-            <span className="preloader-text block font-serif text-3xl md:text-5xl text-white/50 italic leading-tight">
-              & Advanced Computing
-            </span>
-        </div>
-        <div className="overflow-hidden mt-4">
-            <span className="preloader-text block font-sans text-gold text-xs font-bold tracking-[0.3em] uppercase">
-              ICAIAC 2026
-            </span>
-        </div>
+        {/* Optional Loading Text */}
+        <span className="font-sans text-gold text-xs tracking-[0.3em] uppercase animate-pulse">
+            Loading
+        </span>
       </div>
     </div>
   );

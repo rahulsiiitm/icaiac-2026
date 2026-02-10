@@ -64,7 +64,7 @@ export default function Tracks() {
       <HeaderSection />
 
       {/* Hexagon Layout */}
-      <div className="relative w-[1100px] h-[600px] scale-[0.45] md:scale-75 lg:scale-90 origin-center z-10 my-4 md:my-0">
+      <div className="relative w-275 h-150 scale-[0.45] md:scale-75 lg:scale-90 origin-center z-10 my-4 md:my-0">
         <PositionHex track={TRACKS[0]} x={0} y={-230} />
         <PositionHex track={TRACKS[4]} x={0} y={0} />     
         <PositionHex track={TRACKS[8]} x={0} y={230} />   
@@ -109,7 +109,7 @@ function HeaderSection() {
 
 function SubmissionCard() {
   return (
-    <div className="bento-card col-span-1 md:col-span-4 bg-white/[0.08] border border-gold/40 p-8 flex flex-col justify-between hover:border-gold hover:bg-white/[0.1] transition-all duration-300 shadow-[0_0_30px_rgba(0,0,0,0.3)]">
+    <div className="bento-card col-span-1 md:col-span-4 bg-white/8 border border-gold/40 p-8 flex flex-col justify-between hover:border-gold hover:bg-white/10 transition-all duration-300 shadow-[0_0_30px_rgba(0,0,0,0.3)]">
       <div>
         <h3 className="font-serif text-2xl text-white mb-6">Submission Details</h3>
         <div className="bg-charcoal-dark/50 border-l-2 border-gold p-4 mb-6 rounded-r-sm">
@@ -148,7 +148,7 @@ function SubmissionCard() {
 
 function ScopusCard() {
   return (
-    <div className="bento-card col-span-1 md:col-span-4 bg-gradient-to-br from-charcoal-light to-black border border-white/10 p-8 flex flex-col items-center justify-center text-center relative overflow-hidden group">
+    <div className="bento-card col-span-1 md:col-span-4 bg-linear-to-br from-charcoal-light to-black border border-white/10 p-8 flex flex-col items-center justify-center text-center relative overflow-hidden group">
       <div className="absolute inset-0 bg-gold/10 scale-0 group-hover:scale-100 rounded-full blur-3xl transition-transform duration-700" />
       <span className="relative z-10 block font-serif text-5xl mb-2 text-gold opacity-80">Sc</span>
       <h3 className="relative z-10 font-serif text-xl text-white mb-4">Scopus Indexed</h3>
@@ -161,7 +161,7 @@ function ScopusCard() {
 
 function TimelineCard() {
   return (
-    <div className="bento-card col-span-1 md:col-span-4 bg-white/[0.03] border border-white/10 p-8 hover:border-gold/30 transition-colors duration-300">
+    <div className="bento-card col-span-1 md:col-span-4 bg-white/3 border border-white/10 p-8 hover:border-gold/30 transition-colors duration-300">
       <div className="flex items-center gap-3 mb-6">
         <Calendar className="text-gold" size={24} />
         <h3 className="font-serif text-2xl text-white">Timeline</h3>
@@ -204,7 +204,7 @@ function DateRow({ label, date, isLast, highlight = false }: { label: string, da
 function PositionHex({ track, x, y }: { track: typeof TRACKS[0]; x: number; y: number }) {
   return (
     <div
-      className="hexagon-wrapper absolute group w-[260px] h-[225px] flex items-center justify-center cursor-pointer hover:z-50"
+      className="hexagon-wrapper absolute group w-65 h-56.25 flex items-center justify-center cursor-pointer hover:z-50"
       style={{
         left: "50%",
         top: "50%",
