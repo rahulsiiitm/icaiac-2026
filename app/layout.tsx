@@ -15,7 +15,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  // --- FIX: Added metadataBase to resolve relative image paths ---
+  
   metadataBase: new URL("https://icaiac.iiitmanipur.ac.in"),
 
   title: "ICAIAC 2026 | IIIT Manipur",

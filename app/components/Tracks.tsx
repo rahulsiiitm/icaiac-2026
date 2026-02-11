@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ExternalLink, Download, Calendar, AlertCircle, BookOpen } from "lucide-react";
+import { ExternalLink, Download, Calendar, AlertCircle } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -51,7 +51,7 @@ export default function Tracks() {
           },
         }
       );
-      
+
       // Removed .bento-card animation to make cards static
     }, containerRef);
     return () => ctx.revert();
@@ -59,29 +59,29 @@ export default function Tracks() {
 
   return (
     <section id="tracks" ref={containerRef} className="relative w-full py-24 bg-charcoal flex flex-col items-center overflow-hidden">
-      
+
       {/* Header */}
       <HeaderSection />
 
       {/* Hexagon Layout */}
       <div className="relative w-275 h-150 scale-[0.45] md:scale-75 lg:scale-90 origin-center z-10 my-4 md:my-0">
         <PositionHex track={TRACKS[0]} x={0} y={-230} />
-        <PositionHex track={TRACKS[4]} x={0} y={0} />     
-        <PositionHex track={TRACKS[8]} x={0} y={230} />   
-        <PositionHex track={TRACKS[1]} x={-205} y={-115} /> 
-        <PositionHex track={TRACKS[6]} x={-205} y={115} />  
-        <PositionHex track={TRACKS[2]} x={205} y={-115} />  
-        <PositionHex track={TRACKS[7]} x={205} y={115} />   
-        <PositionHex track={TRACKS[3]} x={-410} y={0} />    
-        <PositionHex track={TRACKS[5]} x={410} y={0} />     
+        <PositionHex track={TRACKS[4]} x={0} y={0} />
+        <PositionHex track={TRACKS[8]} x={0} y={230} />
+        <PositionHex track={TRACKS[1]} x={-205} y={-115} />
+        <PositionHex track={TRACKS[6]} x={-205} y={115} />
+        <PositionHex track={TRACKS[2]} x={205} y={-115} />
+        <PositionHex track={TRACKS[7]} x={205} y={115} />
+        <PositionHex track={TRACKS[3]} x={-410} y={0} />
+        <PositionHex track={TRACKS[5]} x={410} y={0} />
       </div>
 
       {/* Details Grid (Static, No Animation) */}
       <div className="relative z-20 max-w-7xl mx-auto px-6 mt-8 w-full">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-            <SubmissionCard />
-            <ScopusCard />
-            <TimelineCard />
+          <SubmissionCard />
+          <ScopusCard />
+          <TimelineCard />
         </div>
       </div>
 
@@ -114,8 +114,8 @@ function SubmissionCard() {
         <h3 className="font-serif text-2xl text-white mb-6">Submission Details</h3>
         <div className="bg-charcoal-dark/50 border-l-2 border-gold p-4 mb-6 rounded-r-sm">
           <p className="font-sans text-white/90 text-xs leading-relaxed">
-            The <strong>Microsoft CMT</strong> service is used for managing the peer-reviewing process. 
-            Papers must not exceed <strong>10 pages</strong> (extra pages chargeable). 
+            The <strong>Microsoft CMT</strong> service is used for managing the peer-reviewing process.
+            Papers must not exceed <strong>10 pages</strong> (extra pages chargeable).
             Please strictly follow the <strong>IEEE Double Column</strong> template.
           </p>
           <p className="font-sans text-gold text-xs font-bold mt-3 flex items-center gap-2">
@@ -124,16 +124,16 @@ function SubmissionCard() {
           </p>
         </div>
       </div>
-      
+
       {/* Downloads */}
       <div className="grid grid-cols-2 gap-3 mt-auto">
         <DownloadButton href={DOWNLOAD_LINKS.latex} label="Latex" />
         <DownloadButton href={DOWNLOAD_LINKS.word} label="Word" />
       </div>
-      
+
       {/* Submit Button */}
       <div className="mt-3">
-        <a 
+        <a
           href={DOWNLOAD_LINKS.cmt}
           target="_blank"
           rel="noopener noreferrer"
@@ -167,11 +167,12 @@ function TimelineCard() {
         <h3 className="font-serif text-2xl text-white">Timeline</h3>
       </div>
       <div className="space-y-0">
-        <DateRow label="Paper Submission" date="Oct 31, 2025" isLast={false} />
-        <DateRow label="Notification" date="Nov 30, 2025" isLast={false} />
-        <DateRow label="Final Paper" date="Dec 15, 2025" isLast={false} />
-        <DateRow label="Registration" date="Dec 20, 2025" isLast={false} />
-        <DateRow label="Conference" date="Jan 5-7, 2026" isLast={true} highlight />
+        <DateRow label="Paper Submission" date="Apr 1, 2026" isLast={false} />
+        <DateRow label="Notification" date="Jun 1, 2026" isLast={false} />
+        <DateRow label="Camera-Ready" date="Jun 25, 2026" isLast={false} />
+        <DateRow label="Early Registration" date="Jul 1, 2026" isLast={false} />
+        <DateRow label="Final Registration" date="Jul 15, 2026" isLast={false} />
+        <DateRow label="Conference" date="Aug 2-5, 2026" isLast={true} highlight />
       </div>
     </div>
   );
@@ -181,7 +182,7 @@ function TimelineCard() {
 
 function DownloadButton({ href, label }: { href: string; label: string }) {
   return (
-    <a 
+    <a
       href={href}
       target="_blank"
       rel="noopener noreferrer"

@@ -152,7 +152,7 @@ export default function Footer() {
       </div>
 
       {/* Glow Effect - Slightly scaled down */}
-      <div className="absolute bottom-0 right-0 w-[300px] h-[300px] bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-75 h-75 bg-gold/5 rounded-full blur-[100px] pointer-events-none" />
 
     </footer>
   );

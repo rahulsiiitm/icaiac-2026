@@ -121,8 +121,18 @@ export default function Registration() {
   );
 }
 
-// SUB-COMPONENT: The "Pass" Card
-function PricingCard({ title, prices, features, featured = false }: any) {
+// SUB-COMPONENT: The "Pass" Card - FIXED TYPE
+interface PricingCardProps {
+  title: string;
+  prices: {
+    early: string;
+    regular: string;
+  };
+  features: string[];
+  featured?: boolean;
+}
+
+function PricingCard({ title, prices, features, featured = false }: PricingCardProps) {
   return (
     <div className={`price-card relative p-8 md:p-10 flex flex-col justify-start group
       ${featured ? 'bg-cream-100 text-charcoal border-none' : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'}

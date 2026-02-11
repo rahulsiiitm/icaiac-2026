@@ -53,7 +53,7 @@ export default function Hero() {
           className="object-cover opacity-50 grayscale"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-charcoal/90 via-charcoal/60 to-charcoal/90" />
+        <div className="absolute inset-0 bg-linear-to-b from-charcoal/90 via-charcoal/60 to-charcoal/90" />
       </div>
 
       {/* CONTENT */}
@@ -87,7 +87,7 @@ export default function Hero() {
         >
           <div className="flex items-center gap-2">
             <span className="block w-2 h-2 bg-gold rounded-full" />
-            <span>Jan 5-7, 2026</span>
+            <span>Aug 2-5, 2026</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="block w-2 h-2 bg-gold rounded-full" />

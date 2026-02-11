@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -102,7 +101,7 @@ export default function Navbar() {
 
                 {/* Dropdown */}
                 {link.hasDropdown && activeDropdown === link.name && (
-                  <div className="absolute top-full mt-2 bg-charcoal/95 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden min-w-[200px] shadow-xl">
+                  <div className="absolute top-full mt-2 bg-charcoal/95 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden min-w-50 shadow-xl">
                     {link.submenu?.map((item) => (
                       <Link
                         key={item.name}
@@ -147,7 +146,7 @@ export default function Navbar() {
           <Link href="/committee/advisory" className="font-serif text-2xl text-cream-100 hover:text-gold transition-colors text-center" onClick={handleLinkClick}>Advisory Committee</Link>
           <Link href="/committee/technical" className="font-serif text-2xl text-cream-100 hover:text-gold transition-colors text-center" onClick={handleLinkClick}>Technical Committee</Link>
           
-          <div className="w-12 h-[1px] bg-white/10 my-2" />
+          <div className="w-12 h-px bg-white/10 my-2" />
 
           {navLinks.map((link) => (
             !link.hasDropdown && (
