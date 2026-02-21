@@ -1,27 +1,28 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
+import AuthProvider from "./components/AuthProvider";
 
-const playfair = Playfair_Display({ 
-  subsets: ["latin"], 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
   variable: "--font-serif",
   display: 'swap',
 });
 
-const inter = Inter({ 
-  subsets: ["latin"], 
+const inter = Inter({
+  subsets: ["latin"],
   variable: "--font-sans",
   display: 'swap',
 });
 
 export const metadata: Metadata = {
-  
+
   metadataBase: new URL("https://icaiac.iiitmanipur.ac.in"),
 
   title: "ICAIAC 2026 | IIIT Manipur",
   description: "1st International Conference on Artificial Intelligence and Advanced Computing",
   keywords: ["ICAIAC", "AI Conference", "IIIT Manipur", "Machine Learning", "Computer Science Conference"],
-  
+
   // 1. Browser Tab Icons
   icons: {
     icon: "/images/logo.png",
@@ -63,7 +64,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${playfair.variable} ${inter.variable} bg-charcoal text-white antialiased`}>
-        {children}
+        {/* Wrap your children in the AuthProvider */}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
