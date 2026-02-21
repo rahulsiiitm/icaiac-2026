@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Image from "next/image";
+import Link from "next/link"; 
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,9 +57,20 @@ export default function Registration() {
         <div className="text-center mb-16">
           <span className="block font-sans text-gold text-xs font-bold tracking-[0.2em] uppercase mb-6">Secure Your Spot</span>
           <h2 className="font-serif text-5xl md:text-7xl mb-8 text-white">Registration</h2>
+          
           <div className="inline-flex items-center bg-white/5 backdrop-blur-md rounded-full p-1 border border-white/10">
-            <button onClick={() => setCurrency("INR")} className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${currency === "INR" ? "bg-gold text-charcoal shadow-lg" : "text-white/50 hover:text-white"}`}>INDIA / SAARC</button>
-            <button onClick={() => setCurrency("USD")} className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${currency === "USD" ? "bg-gold text-charcoal shadow-lg" : "text-white/50 hover:text-white"}`}>INTERNATIONAL</button>
+            <button 
+                onClick={() => setCurrency("INR")} 
+                className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${currency === "INR" ? "bg-gold text-charcoal shadow-lg" : "text-white/50 hover:text-white"}`}
+            >
+                INDIA / SAARC
+            </button>
+            <button 
+                onClick={() => setCurrency("USD")} 
+                className={`px-6 py-2 rounded-full text-xs font-bold tracking-widest transition-all duration-300 ${currency === "USD" ? "bg-gold text-charcoal shadow-lg" : "text-white/50 hover:text-white"}`}
+            >
+                INTERNATIONAL
+            </button>
           </div>
         </div>
 
@@ -82,8 +94,8 @@ export default function Registration() {
         </div>
 
         <p className="mt-16 font-sans text-white/30 text-sm max-w-2xl text-center leading-relaxed">
-          * The registration fee covers the conference kit, lunch, and high tea. 
-          Accommodation is not included. At least one author per paper must register to ensure publication.
+          * Registration fee covers the conference kit, lunch, and high tea. 
+          Accommodation is not included. <strong>Authors (Students & Faculty) must pay via CMT</strong>.
         </p>
       </div>
     </section>
@@ -98,11 +110,18 @@ interface PricingCardProps {
 }
 
 function PricingCard({ title, prices, features, featured = false }: PricingCardProps) {
+  // CORRECTED LOGIC: Check for "Non-Author" to identify Attendee
+  const isAttendee = title.toLowerCase().includes("non-author");
+
   return (
-    <div className={`price-card relative p-8 md:p-10 flex flex-col justify-start group ${featured ? 'bg-cream-100 text-charcoal border-none' : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'} transition-all duration-500 rounded-sm overflow-hidden h-full`}>
+    <div className={`price-card relative p-8 md:p-10 flex flex-col justify-between group ${
+      featured 
+        ? 'bg-cream-100 text-charcoal border-none shadow-2xl scale-[1.02]' 
+        : 'bg-white/5 border border-white/10 text-white hover:bg-white/10'
+    } transition-all duration-500 rounded-sm overflow-hidden h-full`}>
+      
       {!featured && <div className="absolute inset-0 bg-linear-to-tr from-white/0 via-white/5 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />}
       
-      {/* Logo Watermark on Card */}
       <div className="absolute top-6 right-6 w-16 h-16 opacity-10 group-hover:opacity-20 transition-opacity duration-500">
           <Image src="/images/logo.png" alt="" fill className="object-contain grayscale" />
       </div>
@@ -110,6 +129,7 @@ function PricingCard({ title, prices, features, featured = false }: PricingCardP
       <div className="relative z-10">
         <h3 className={`font-serif text-3xl mb-2 ${featured ? 'text-charcoal' : 'text-white'}`}>{title}</h3>
         <div className="w-12 h-px bg-gold mb-8" />
+        
         <div className="space-y-6 mb-10">
           <div>
             <span className="block text-[10px] uppercase tracking-widest opacity-60 mb-1">Early Bird</span>
@@ -120,6 +140,7 @@ function PricingCard({ title, prices, features, featured = false }: PricingCardP
             <span className={`text-2xl font-serif opacity-70 ${featured ? 'text-charcoal' : 'text-white'}`}>{prices.regular}</span>
           </div>
         </div>
+
         <ul className="space-y-3">
           {features.map((item: string, i: number) => (
             <li key={i} className="flex items-start gap-3 text-sm font-sans opacity-80">
@@ -128,6 +149,37 @@ function PricingCard({ title, prices, features, featured = false }: PricingCardP
             </li>
           ))}
         </ul>
+      </div>
+
+      {/* REFINED BUTTON LOGIC */}
+      <div className="relative z-10 mt-12">
+        {isAttendee ? (
+          /* Non-Author: Internal Portal */
+          <Link 
+            href="/sign-in"
+            className={`block text-center w-full py-4 font-bold uppercase text-[10px] tracking-[0.3em] transition-all duration-300 ${
+              featured 
+                ? 'bg-charcoal text-white hover:bg-gold hover:text-charcoal' 
+                : 'bg-gold text-charcoal hover:bg-white'
+            } shadow-lg`}
+          >
+            Register & Pay
+          </Link>
+        ) : (
+          /* Author (Student or Faculty): CMT Portal */
+          <a 
+            href="https://cmt3.research.microsoft.com/User/Login?ReturnUrl=%2FICAIAC2026"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`block text-center w-full py-4 border font-bold uppercase text-[10px] tracking-[0.3em] transition-all duration-300 ${
+              featured 
+                ? 'border-charcoal text-charcoal hover:bg-charcoal hover:text-white' 
+                : 'border-gold text-gold hover:bg-gold hover:text-charcoal'
+            }`}
+          >
+            Pay via CMT Portal
+          </a>
+        )}
       </div>
     </div>
   );

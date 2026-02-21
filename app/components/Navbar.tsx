@@ -3,8 +3,10 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession, signOut } from "next-auth/react";
 
 export default function Navbar() {
+  const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const navRef = useRef<HTMLDivElement>(null);
@@ -57,7 +59,6 @@ export default function Navbar() {
             className="flex items-center gap-3 cursor-pointer group"
             onClick={handleLinkClick}
           >
-            {/* Logo */}
             <div className="relative w-8 h-8 md:w-10 md:h-10 transition-transform duration-300 group-hover:scale-110">
                 <Image 
                     src="/images/logo.png" 
@@ -116,6 +117,35 @@ export default function Navbar() {
                 )}
               </div>
             ))}
+
+            {/* --- AUTH SECTION --- */}
+            <div className="h-4 w-px bg-white/10 mx-2" />
+
+            {session ? (
+              <div className="flex items-center gap-4">
+                <Link 
+                  href="/dashboard" 
+                  onClick={handleLinkClick}
+                  className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold hover:text-white transition-colors"
+                >
+                  Portal
+                </Link>
+                <button 
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className="font-sans text-[11px] font-bold uppercase tracking-widest text-white/50 hover:text-gold transition-colors"
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <Link 
+                href="/sign-in" 
+                onClick={handleLinkClick}
+                className="font-sans text-[11px] font-bold uppercase tracking-widest text-gold hover:text-white transition-colors border border-gold/30 px-4 py-1.5 rounded-full hover:bg-gold"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
 
           <button 
@@ -131,7 +161,6 @@ export default function Navbar() {
       <div className={`fixed inset-0 z-40 bg-charcoal transition-transform duration-500 ease-in-out ${isOpen ? "translate-y-0" : "-translate-y-full"}`}>
         <div className="flex flex-col items-center justify-center h-full gap-6 p-4 overflow-y-auto">
           
-          {/* Mobile Menu Logo */}
           <div className="relative w-16 h-16 mb-2 animate-pulse">
             <Image 
                 src="/images/logo.png" 
@@ -141,13 +170,27 @@ export default function Navbar() {
             />
           </div>
 
-          {/* Explicit Mobile Links for Committee */}
-          <Link href="/committee/organizing" className="font-serif text-2xl text-cream-100 hover:text-gold transition-colors text-center" onClick={handleLinkClick}>Organizing Committee</Link>
-          <Link href="/committee/advisory" className="font-serif text-2xl text-cream-100 hover:text-gold transition-colors text-center" onClick={handleLinkClick}>Advisory Committee</Link>
-          <Link href="/committee/technical" className="font-serif text-2xl text-cream-100 hover:text-gold transition-colors text-center" onClick={handleLinkClick}>Technical Committee</Link>
-          
-          <div className="w-12 h-px bg-white/10 my-2" />
+          {/* Portal / Sign In for Mobile */}
+          {session ? (
+            <>
+              <Link href="/dashboard" className="font-serif text-3xl text-gold" onClick={handleLinkClick}>Your Portal</Link>
+              <button 
+                onClick={() => signOut({ callbackUrl: "/" })}
+                className="font-sans text-xs font-bold text-white/50 uppercase tracking-widest"
+              >
+                Sign Out
+              </button>
+            </>
+          ) : (
+            <Link href="/sign-in" className="font-serif text-3xl text-gold underline underline-offset-8" onClick={handleLinkClick}>Sign In</Link>
+          )}
 
+          <div className="w-12 h-px bg-white/10 my-4" />
+
+          <Link href="/committee/organizing" className="font-serif text-2xl text-cream-100" onClick={handleLinkClick}>Organizing Committee</Link>
+          <Link href="/committee/advisory" className="font-serif text-2xl text-cream-100" onClick={handleLinkClick}>Advisory Committee</Link>
+          <Link href="/committee/technical" className="font-serif text-2xl text-cream-100" onClick={handleLinkClick}>Technical Committee</Link>
+          
           {navLinks.map((link) => (
             !link.hasDropdown && (
               <Link
@@ -161,7 +204,6 @@ export default function Navbar() {
             )
           ))}
 
-          {/* Close Button */}
           <button 
             className="mt-8 text-white/50 text-xs font-bold tracking-widest uppercase hover:text-gold transition-colors"
             onClick={() => setIsOpen(false)}

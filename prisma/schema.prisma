@@ -8,7 +8,7 @@ datasource db {
 }
 
 // ==========================================
-// 1. NEXTAUTH STANDARD MODELS
+// 1. NEXTAUTH CORE MODELS
 // ==========================================
 
 model Account {
@@ -42,13 +42,14 @@ model User {
   id            String    @id @default(cuid())
   name          String?
   email         String?   @unique
+  password      String?
   emailVerified DateTime?
   image         String?
-  role          Role      @default(USER) // Identifies Admins vs Normal Users
+  role          Role      @default(USER) 
   
   accounts      Account[]
   sessions      Session[]
-  registration  Registration? // A user has one conference registration
+  registration  Registration? 
 }
 
 model VerificationToken {
@@ -60,7 +61,7 @@ model VerificationToken {
 }
 
 // ==========================================
-// 2. ICAIAC CUSTOM MODELS
+// 2. ICAIAC CONFERENCE MODELS
 // ==========================================
 
 enum Role {
@@ -71,8 +72,8 @@ enum Role {
 model Registration {
   id             String   @id @default(cuid())
   userId         String   @unique
-  category       String   // "Student Author", "Faculty & Industry", "Non-Author"
-  region         String   // "INR" or "USD"
+  category       String   
+  region         String   
   institution    String?
   designation    String?
   phoneNumber    String?
@@ -88,10 +89,10 @@ model Payment {
   id             String   @id @default(cuid())
   registrationId String   @unique
   amount         Float
-  currency       String   // "INR" or "USD"
+  currency       String   
   status         PaymentStatus @default(PENDING)
-  transactionId  String?  @unique // From Razorpay, Stripe, or Bank Transfer ref
-  receiptUrl     String?  // Link to uploaded receipt if doing manual verification
+  transactionId  String?  @unique 
+  receiptUrl     String?  // Field for ICICI receipt uploads
   
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
