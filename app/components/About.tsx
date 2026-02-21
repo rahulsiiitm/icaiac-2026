@@ -139,7 +139,7 @@ export default function About() {
         {/* ROW 3: HIGHLIGHT BAR */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-charcoal/10 border-t border-charcoal/10 pt-8 about-text">
             <HighlightBox label="Mode" value="Physical Presentation" />
-            <HighlightBox label="Indexing" value="Scopus & IEEE" />
+            <HighlightBox label="Indexing" value="Scopus" />
             <HighlightBox label="Location" value="Imphal, India" />
         </div>
 
