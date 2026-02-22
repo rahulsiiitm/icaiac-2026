@@ -16,8 +16,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-
-  metadataBase: new URL("https://icaiac.iiitmanipur.ac.in"),
+  metadataBase: new URL("https://icaiac-2026.vercel.app"),
 
   title: "ICAIAC 2026 | IIIT Manipur",
   description: "1st International Conference on Artificial Intelligence and Advanced Computing",
@@ -33,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "ICAIAC 2026 | IIIT Manipur",
     description: "Join us for the 1st International Conference on AI & Advanced Computing.",
-    url: "https://icaiac.iiitmanipur.ac.in",
+    url: "https://icaiac-2026.vercel.app",
     siteName: "ICAIAC 2026",
     images: [
       {

@@ -1,13 +1,13 @@
 "use server";
-
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { calculateFee } from "../lib/pricing";
+import { Resend } from "resend";
+import { RegistrationReceivedEmail, PaymentVerifiedEmail } from "../components/EmailTemplates";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
-
-// Add to your existing actions.ts
-import bcrypt from "bcrypt";
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function signUpUser(formData: FormData) {
   const email = formData.get("email") as string;
@@ -16,7 +16,7 @@ export async function signUpUser(formData: FormData) {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     await prisma.user.create({
       data: {
         email,
@@ -81,31 +81,51 @@ export async function registerUser(formData: FormData, userId: string) {
  */
 export async function submitPaymentProof(registrationId: string, transactionId: string, receiptUrl: string) {
   try {
-    const reg = await prisma.registration.findUnique({ where: { id: registrationId } });
-    
-    // Safety check: Only Non-Authors should use this portal for payment
-    if (!reg || reg.category.includes("Author")) {
-      return { success: false, error: "Authors must pay via CMT. This portal is for Attendees only." };
-    }
+    const reg = await prisma.registration.findUnique({
+      where: { id: registrationId },
+      include: { user: true }
+    });
+
+    if (!reg || reg.category.includes("Author")) return { success: false, error: "Invalid registration" };
 
     const amount = calculateFee(reg.category, reg.region);
-
     await prisma.payment.create({
-      data: {
-        registrationId,
-        transactionId,
-        receiptUrl,
-        amount,
-        currency: reg.region === "INR" ? "INR" : "USD",
-        status: "PENDING",
-      },
+      data: { registrationId, transactionId, receiptUrl, amount, currency: reg.region === "INR" ? "INR" : "USD", status: "PENDING" },
+    });
+
+    // Send Receipt Confirmation Email
+    await resend.emails.send({
+      from: 'ICAIAC Testing <onboarding@resend.dev>',
+      to: reg.user.email!,
+      subject: 'Registration Received - ICAIAC 2026',
+      react: RegistrationReceivedEmail({ name: reg.user.name!, utr: transactionId }),
     });
 
     revalidatePath("/dashboard");
     return { success: true };
-  } catch (error) {
-    return { success: false, error: "Submission failed." };
-  }
+  } catch (error) { return { success: false, error: "Submission failed." }; }
+}
+
+export async function verifyPayment(paymentId: string) {
+  try {
+    const payment = await prisma.payment.update({
+      where: { id: paymentId },
+      data: { status: "VERIFIED" },
+      include: { registration: { include: { user: true } } }
+    });
+
+    // Send Verified Confirmation Email
+    await resend.emails.send({
+      from: 'ICAIAC Testing <onboarding@resend.dev>',
+      to: payment.registration.user.email!,
+      subject: 'Registration Confirmed - ICAIAC 2026',
+      react: PaymentVerifiedEmail({ name: payment.registration.user.name! }),
+    });
+
+    revalidatePath("/admin");
+    revalidatePath("/dashboard");
+    return { success: true };
+  } catch (error) { return { success: false }; }
 }
 
 /**
@@ -123,25 +143,4 @@ export async function getAllRegistrations() {
   } catch (error) {
     return [];
   }
-}
-
-/**
- * Admin Action: Verify a participant's payment
- */
-export async function verifyPayment(paymentId: string) {
-  try {
-    await prisma.payment.update({
-      where: { id: paymentId },
-      data: { status: "VERIFIED" },
-    });
-    
-    // Refresh both pages so the changes show up immediately
-    revalidatePath("/admin");
-    revalidatePath("/dashboard");
-    
-    return { success: true };
-  } catch (error) {
-    console.error("Verification Error:", error);
-    return { success: false, error: "Failed to verify payment." };
-  }
-}
+} 
