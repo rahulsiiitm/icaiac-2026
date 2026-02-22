@@ -38,7 +38,7 @@ export default function Dashboard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registration, setRegistration] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  
+
   const [uploadedUrl, setUploadedUrl] = useState("");
   const [transactionId, setTransactionId] = useState("");
 
@@ -58,7 +58,7 @@ export default function Dashboard() {
     }
     if (status === "authenticated") checkStatus();
   }, [session, status]);
-    
+
   if (status === "unauthenticated") redirect("/sign-in");
 
   if (session?.user?.role === "ADMIN") {
@@ -82,7 +82,7 @@ export default function Dashboard() {
   return (
     <main className="min-h-screen bg-charcoal text-white p-6 md:p-12 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gold/5 blur-[120px] pointer-events-none" />
-      
+
       <div className="max-w-4xl mx-auto relative z-10">
         <header className="flex justify-between items-center mb-16 border-b border-white/10 pb-8">
           <div>
@@ -128,8 +128,24 @@ export default function Dashboard() {
                   <input name="phoneNumber" type="tel" required className="bg-charcoal/50 border border-white/10 p-4 text-sm focus:border-gold" />
                 </div>
               </div>
-              <button disabled={isSubmitting} className="w-full bg-gold text-charcoal font-bold py-5 text-xs uppercase tracking-[0.3em] hover:bg-white transition-all shadow-xl">
-                {isSubmitting ? "Processing..." : "Continue to Payment"}
+              <button
+                disabled={!uploadedUrl || !transactionId || isSubmitting}
+                onClick={async () => {
+                  setIsSubmitting(true);
+                  const res = await submitPaymentProof(registration.id, transactionId, uploadedUrl);
+
+                  if (res.success) {
+                    setRegistration(await getRegistrationStatus(session?.user?.id as string));
+                  } else {
+                    // THIS WILL SHOW YOU THE ACTUAL ERROR
+                    alert(res.error || "Something went wrong.");
+                  }
+
+                  setIsSubmitting(false);
+                }}
+                className="w-full bg-gold text-charcoal font-bold py-5 text-[10px] uppercase tracking-[0.3em] hover:bg-white transition-all shadow-xl disabled:opacity-30"
+              >
+                Confirm Registration
               </button>
             </form>
           </section>
@@ -146,8 +162,8 @@ export default function Dashboard() {
                 <p className="opacity-80">A/C: <span className="text-white font-mono">XXXXXXXXXXXX</span></p>
                 <p className="opacity-80">IFSC: <span className="text-white font-mono">ICIC000XXXX</span></p>
                 <div className="pt-4 border-t border-white/5">
-                    <p className="text-[10px] uppercase text-gold font-bold">Fee Amount</p>
-                    <p className="text-2xl font-serif">{registration.region === 'INR' ? '₹4,000' : '$80'}</p>
+                  <p className="text-[10px] uppercase text-gold font-bold">Fee Amount</p>
+                  <p className="text-2xl font-serif">{registration.region === 'INR' ? '₹4,000' : '$80'}</p>
                 </div>
               </div>
               <div className="space-y-8">
@@ -168,8 +184,8 @@ export default function Dashboard() {
                     />
                   )}
                 </div>
-                <button 
-                  disabled={!uploadedUrl || !transactionId || isSubmitting} 
+                <button
+                  disabled={!uploadedUrl || !transactionId || isSubmitting}
                   onClick={async () => {
                     setIsSubmitting(true);
                     const res = await submitPaymentProof(registration.id, transactionId, uploadedUrl);
@@ -189,7 +205,7 @@ export default function Dashboard() {
         {registration?.payment?.status === "VERIFIED" ? (
           <div className="bg-white/[0.02] border border-gold/20 p-20 text-center rounded-sm backdrop-blur-md">
             <div className="w-24 h-24 bg-gold text-charcoal flex items-center justify-center rounded-full mx-auto mb-10 shadow-xl">
-                <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
+              <svg className="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" /></svg>
             </div>
             <h2 className="font-serif text-5xl mb-6">Confirmed</h2>
             <p className="text-white/50 text-sm max-w-sm mx-auto leading-relaxed mb-12">Registration verified for <strong>ICAIAC 2026</strong>. Download your official invitation letter below.</p>

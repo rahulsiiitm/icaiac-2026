@@ -89,21 +89,31 @@ export async function submitPaymentProof(registrationId: string, transactionId: 
     if (!reg || reg.category.includes("Author")) return { success: false, error: "Invalid registration" };
 
     const amount = calculateFee(reg.category, reg.region);
+
+    // 1. Save to Database First
     await prisma.payment.create({
       data: { registrationId, transactionId, receiptUrl, amount, currency: reg.region === "INR" ? "INR" : "USD", status: "PENDING" },
     });
 
-    // Send Receipt Confirmation Email
-    await resend.emails.send({
-      from: 'ICAIAC Testing <onboarding@resend.dev>',
-      to: reg.user.email!,
-      subject: 'Registration Received - ICAIAC 2026',
-      react: RegistrationReceivedEmail({ name: reg.user.name!, utr: transactionId }),
-    });
+    // 2. Try to Send Email (Safely isolated)
+    try {
+      await resend.emails.send({
+        from: 'ICAIAC Testing <onboarding@resend.dev>',
+        to: reg.user.email!,
+        subject: 'Registration Received - ICAIAC 2026',
+        react: RegistrationReceivedEmail({ name: reg.user.name!, utr: transactionId }),
+      });
+    } catch (emailError) {
+      console.error("Email blocked by Resend Sandbox (normal during testing):", emailError);
+    }
 
     revalidatePath("/dashboard");
     return { success: true };
-  } catch (error) { return { success: false, error: "Submission failed." }; }
+  } catch (error) {
+    console.error("Database Error:", error);
+    // This usually happens if they type a UTR that already exists in the database
+    return { success: false, error: "Submission failed. Have you already used this UTR?" };
+  }
 }
 
 export async function verifyPayment(paymentId: string) {
