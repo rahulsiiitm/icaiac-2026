@@ -1,36 +1,173 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ICAIAC 2026 Conference Portal
 
-## Getting Started
+The official conference management and registration portal for the 1st
+International Conference on Artificial Intelligence and Advanced
+Computing (ICAIAC 2026), hosted by the Indian Institute of Information
+Technology (IIIT) Manipur.
 
-First, run the development server:
+This full-stack web application manages public-facing conference
+information, user authentication, role-based registration workflows,
+payment verification, and automated document generation.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+------------------------------------------------------------------------
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Overview
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The ICAIAC 2026 Conference Portal streamlines the end-to-end
+registration and management workflow for authors and attendees. It
+integrates secure authentication, structured access control, payment
+validation, automated email communication, and dynamic document
+generation into a scalable production-ready platform.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+------------------------------------------------------------------------
 
-## Learn More
+## Key Features
 
-To learn more about Next.js, take a look at the following resources:
+### Segmented Registration Workflows
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+-   Authors are automatically redirected to the Microsoft CMT portal for
+    peer-review management.
+-   Non-Authors (Attendees) are directed to an internal dashboard for
+    ICICI bank transfer receipt uploads.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Dual Authentication System
 
-## Deploy on Vercel
+-   Google OAuth login
+-   Email and password authentication (hashed using bcryptjs)
+-   Authentication managed via NextAuth.js
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Role-Based Access Control (RBAC)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+-   Middleware-protected routes
+-   Users access only personal dashboards
+-   Authorized staff access the Admin Management Console
+
+### Admin Management Console
+
+-   Review uploaded payment receipts
+-   Verify transactions
+-   Monitor real-time revenue statistics
+-   Export attendee lists as CSV
+
+### Automated Email Notifications
+
+-   Registration confirmation emails
+-   Payment verification receipts
+-   Powered by Resend
+
+### Dynamic PDF Generation
+
+-   Personalized Official Invitation Letters generated upon payment
+    verification
+
+### High-Performance UI/UX
+
+-   Tailwind CSS styling
+-   GSAP ScrollTrigger animations
+-   Optimized performance and memory-safe animations
+
+### Web Analytics
+
+-   Privacy-friendly analytics via Vercel Analytics
+
+------------------------------------------------------------------------
+
+## Technology Stack
+
+Framework: Next.js 14+ (App Router)\
+Language: TypeScript\
+Styling: Tailwind CSS\
+Animations: GSAP\
+Database: PostgreSQL (Neon)\
+ORM: Prisma\
+Authentication: NextAuth.js (v4)\
+File Storage: UploadThing\
+Email Service: Resend\
+Deployment: Vercel
+
+------------------------------------------------------------------------
+
+## Prerequisites
+
+-   Node.js v18 or higher
+-   npm or yarn
+-   PostgreSQL database (Neon recommended)
+-   Google Cloud Console account
+-   UploadThing account
+-   Resend account
+
+------------------------------------------------------------------------
+
+## Environment Variables
+
+Create a `.env` file in the root directory:
+
+DATABASE_URL="postgresql://user:password@host/dbname?sslmode=require"
+
+NEXTAUTH_SECRET="your_generated_random_secret_string"
+NEXTAUTH_URL="http://localhost:3000"
+
+GOOGLE_CLIENT_ID="your_google_client_id"
+GOOGLE_CLIENT_SECRET="your_google_client_secret"
+
+UPLOADTHING_SECRET="your_uploadthing_secret"
+UPLOADTHING_APP_ID="your_uploadthing_app_id"
+
+RESEND_API_KEY="your_resend_api_key"
+
+------------------------------------------------------------------------
+
+## Local Development Setup
+
+1.  Clone the repository\
+    git clone https://github.com/yourusername/icaiac-2026.git\
+    cd icaiac-2026
+
+2.  Install dependencies\
+    npm install
+
+3.  Generate Prisma Client and push schema\
+    npx prisma generate\
+    npx prisma db push
+
+4.  Start development server\
+    npm run dev
+
+5.  Open in browser\
+    http://localhost:3000
+
+------------------------------------------------------------------------
+
+## Admin Access Configuration
+
+All new users are assigned the USER role by default.
+
+To enable admin access:
+
+1.  Sign in to create your user record.
+2.  Open Neon SQL Editor or run `npx prisma studio`.
+3.  Locate your record in the User table.
+4.  Change role from USER to ADMIN.
+5.  Refresh the application.
+
+------------------------------------------------------------------------
+
+## Deployment
+
+1.  Push code to GitHub.
+2.  Import the project into Vercel.
+3.  Ensure `postinstall` script includes `prisma generate`.
+4.  Add all environment variables in Vercel dashboard.
+5.  Deploy.
+
+After deployment: - Update NEXTAUTH_URL to production domain. - Update
+Google OAuth Authorized Redirect URIs.
+
+------------------------------------------------------------------------
+
+## License
+
+Designed and developed for the Department of Computer Science &
+Engineering, IIIT Manipur.
+
+All rights reserved for ICAIAC 2026.
