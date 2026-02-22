@@ -3,7 +3,7 @@ import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials"; // New Import
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { PrismaClient } from "@prisma/client";
-import bcrypt from "bcrypt"; // Required for password hashing
+import bcrypt from "bcryptjs"; // Changed from "bcrypt"
 
 const prisma = new PrismaClient();
 

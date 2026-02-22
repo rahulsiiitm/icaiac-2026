@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { calculateFee } from "../lib/pricing";
 import { Resend } from "resend";
 import { RegistrationReceivedEmail, PaymentVerifiedEmail } from "../components/EmailTemplates";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs"; // Changed from "bcrypt"
 
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
