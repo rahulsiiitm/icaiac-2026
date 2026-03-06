@@ -4,11 +4,14 @@ import { revalidatePath } from "next/cache";
 import { calculateFee } from "../lib/pricing";
 import { Resend } from "resend";
 import { RegistrationReceivedEmail, PaymentVerifiedEmail } from "../components/EmailTemplates";
-import bcrypt from "bcryptjs"; // Changed from "bcrypt"
+import bcrypt from "bcryptjs"; 
 
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+/**
+ * Creates a new user and sends a Welcome Email
+ */
 export async function signUpUser(formData: FormData) {
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
@@ -22,28 +25,32 @@ export async function signUpUser(formData: FormData) {
         email,
         name,
         password: hashedPassword,
-        role: "USER" // Default role
+        role: "USER" 
       }
     });
+
+    // Send Welcome Email immediately upon sign-up
+    try {
+      await resend.emails.send({
+        from: 'ICAIAC 2026 <onboarding@resend.dev>',
+        to: email,
+        subject: 'Welcome to ICAIAC 2026',
+        html: `
+          <div style="font-family: serif; color: #1a1a1a;">
+            <h1 style="color: #e89b6e;">Welcome, ${name}!</h1>
+            <p>Your account for the <strong>ICAIAC 2026 Portal</strong> has been successfully created.</p>
+            <p>You can now log in to complete your participant profile and proceed with registration.</p>
+            <p>Best Regards,<br />Organizing Committee, IIIT Manipur</p>
+          </div>
+        `
+      });
+    } catch (emailError) {
+      console.warn("Welcome email skipped (Sandbox limitation):", emailError);
+    }
+
     return { success: true };
   } catch (error) {
     return { success: false, error: "Email already exists or invalid data." };
-  }
-}
-
-/**
- * Fetches registration and payment status for the dashboard
- */
-export async function getRegistrationStatus(userId: string) {
-  if (!userId) return null;
-  try {
-    return await prisma.registration.findUnique({
-      where: { userId },
-      include: { payment: true },
-    });
-  } catch (error) {
-    console.error("Fetch Status Error:", error);
-    return null;
   }
 }
 
@@ -55,7 +62,9 @@ export async function registerUser(formData: FormData, userId: string) {
   const region = formData.get("region") as string;
   const institution = formData.get("institution") as string;
   const designation = formData.get("designation") as string;
-  const phoneNumber = formData.get("phoneNumber") as string;
+  
+  // Maps form "phone" to schema "phoneNumber"
+  const phoneNumber = formData.get("phone") as string;
 
   try {
     await prisma.registration.create({
@@ -65,14 +74,13 @@ export async function registerUser(formData: FormData, userId: string) {
         region,
         institution,
         designation,
-        phoneNumber,
+        phoneNumber, 
       },
     });
     revalidatePath("/dashboard");
     return { success: true };
   } catch (error) {
-    console.error("Registration Error:", error);
-    return { success: false, error: "Database error. Please try again." };
+    return { success: false, error: "Database error. Check if you already have an active registration." };
   }
 }
 
@@ -86,33 +94,51 @@ export async function submitPaymentProof(registrationId: string, transactionId: 
       include: { user: true }
     });
 
-    if (!reg || reg.category.includes("Author")) return { success: false, error: "Invalid registration" };
+    // Strict check for "Non-Author" to prevent rejection of valid attendees
+    if (!reg || reg.category !== "Non-Author") {
+        return { success: false, error: "Invalid registration category." };
+    }
 
     const amount = calculateFee(reg.category, reg.region);
 
-    // 1. Save to Database First
     await prisma.payment.create({
-      data: { registrationId, transactionId, receiptUrl, amount, currency: reg.region === "INR" ? "INR" : "USD", status: "PENDING" },
+      data: { 
+        registrationId, 
+        transactionId, 
+        receiptUrl, 
+        amount, 
+        currency: reg.region === "INR" ? "INR" : "USD", 
+        status: "PENDING" 
+      },
     });
 
-    // 2. Try to Send Email (Safely isolated)
     try {
       await resend.emails.send({
-        from: 'ICAIAC Testing <onboarding@resend.dev>',
+        from: 'ICAIAC 2026 <onboarding@resend.dev>',
         to: reg.user.email!,
         subject: 'Registration Received - ICAIAC 2026',
         react: RegistrationReceivedEmail({ name: reg.user.name!, utr: transactionId }),
       });
     } catch (emailError) {
-      console.error("Email blocked by Resend Sandbox (normal during testing):", emailError);
+      console.warn("Payment email skipped:", emailError);
     }
 
     revalidatePath("/dashboard");
     return { success: true };
   } catch (error) {
-    console.error("Database Error:", error);
-    // This usually happens if they type a UTR that already exists in the database
-    return { success: false, error: "Submission failed. Have you already used this UTR?" };
+    return { success: false, error: "Submission failed. This UTR/Transaction ID is already in use." };
+  }
+}
+
+export async function getRegistrationStatus(userId: string) {
+  if (!userId) return null;
+  try {
+    return await prisma.registration.findUnique({
+      where: { userId },
+      include: { payment: true },
+    });
+  } catch (error) {
+    return null;
   }
 }
 
@@ -124,9 +150,8 @@ export async function verifyPayment(paymentId: string) {
       include: { registration: { include: { user: true } } }
     });
 
-    // Send Verified Confirmation Email
     await resend.emails.send({
-      from: 'ICAIAC Testing <onboarding@resend.dev>',
+      from: 'ICAIAC 2026 <onboarding@resend.dev>',
       to: payment.registration.user.email!,
       subject: 'Registration Confirmed - ICAIAC 2026',
       react: PaymentVerifiedEmail({ name: payment.registration.user.name! }),
@@ -138,19 +163,11 @@ export async function verifyPayment(paymentId: string) {
   } catch (error) { return { success: false }; }
 }
 
-/**
- * Admin Action: Fetch all participants for the admin panel
- */
 export async function getAllRegistrations() {
   try {
     return await prisma.registration.findMany({
-      include: {
-        user: true,
-        payment: true,
-      },
+      include: { user: true, payment: true },
       orderBy: { createdAt: "desc" },
     });
-  } catch (error) {
-    return [];
-  }
-} 
+  } catch (error) { return []; }
+}
