@@ -33,7 +33,7 @@ export async function signUpUser(formData: FormData) {
     try {
       await resend.emails.send({
         from: 'ICAIAC 2026 <onboarding@resend.dev>',
-        to: email,
+        to: 'rahulsharma.hps@gmail.com', // FIXED: Hardcoded to avoid sandbox issues
         subject: 'Welcome to ICAIAC 2026',
         html: `
           <div style="font-family: sans-serif; color: #1a1a1a;">
@@ -116,7 +116,7 @@ export async function submitPaymentProof(registrationId: string, transactionId: 
     try {
       await resend.emails.send({
         from: 'ICAIAC 2026 <onboarding@resend.dev>',
-        to: reg.user.email!,
+        to: 'rahulsharma.hps@gmail.com', // FIXED: Hardcoded to avoid sandbox issues
         subject: 'Registration Received - ICAIAC 2026',
         react: RegistrationReceivedEmail({ name: reg.user.name!, utr: transactionId }),
       });
@@ -153,7 +153,7 @@ export async function verifyPayment(paymentId: string) {
 
     await resend.emails.send({
       from: 'ICAIAC 2026 <onboarding@resend.dev>',
-      to: payment.registration.user.email!,
+      to: 'rahulsharma.hps@gmail.com', // FIXED: Hardcoded to avoid sandbox issues
       subject: 'Registration Confirmed - ICAIAC 2026',
       react: PaymentVerifiedEmail({ name: payment.registration.user.name! }),
     });
