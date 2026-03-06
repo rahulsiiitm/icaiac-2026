@@ -4,13 +4,13 @@ import { revalidatePath } from "next/cache";
 import { calculateFee } from "../lib/pricing";
 import { Resend } from "resend";
 import { RegistrationReceivedEmail, PaymentVerifiedEmail } from "../components/EmailTemplates";
-import bcrypt from "bcryptjs"; 
+import bcrypt from "bcryptjs"; // Using bcryptjs for compatibility
 
 const prisma = new PrismaClient();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
- * Creates a new user and sends a Welcome Email
+ * Creates a new user and sends an immediate Welcome Email
  */
 export async function signUpUser(formData: FormData) {
   const email = formData.get("email") as string;
@@ -29,14 +29,14 @@ export async function signUpUser(formData: FormData) {
       }
     });
 
-    // Send Welcome Email immediately upon sign-up
+    // Automated Welcome Email
     try {
       await resend.emails.send({
         from: 'ICAIAC 2026 <onboarding@resend.dev>',
         to: email,
         subject: 'Welcome to ICAIAC 2026',
         html: `
-          <div style="font-family: serif; color: #1a1a1a;">
+          <div style="font-family: sans-serif; color: #1a1a1a;">
             <h1 style="color: #e89b6e;">Welcome, ${name}!</h1>
             <p>Your account for the <strong>ICAIAC 2026 Portal</strong> has been successfully created.</p>
             <p>You can now log in to complete your participant profile and proceed with registration.</p>
@@ -63,7 +63,7 @@ export async function registerUser(formData: FormData, userId: string) {
   const institution = formData.get("institution") as string;
   const designation = formData.get("designation") as string;
   
-  // Maps form "phone" to schema "phoneNumber"
+  // FIXED: Maps form "phone" to schema "phoneNumber"
   const phoneNumber = formData.get("phone") as string;
 
   try {
@@ -80,7 +80,8 @@ export async function registerUser(formData: FormData, userId: string) {
     revalidatePath("/dashboard");
     return { success: true };
   } catch (error) {
-    return { success: false, error: "Database error. Check if you already have an active registration." };
+    console.error("Registration Error:", error);
+    return { success: false, error: "Database error. Check if you already have a registration." };
   }
 }
 
@@ -94,7 +95,7 @@ export async function submitPaymentProof(registrationId: string, transactionId: 
       include: { user: true }
     });
 
-    // Strict check for "Non-Author" to prevent rejection of valid attendees
+    // FIXED: Strict check for "Non-Author" to prevent rejection
     if (!reg || reg.category !== "Non-Author") {
         return { success: false, error: "Invalid registration category." };
     }
