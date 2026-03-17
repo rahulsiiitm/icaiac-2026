@@ -9,18 +9,13 @@ import Venue from "./components/Venue";
 import Partners from "./components/Partners";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-// import Preloader from "./components/Preloader"; // <--- New Import
-import BackToTop from "./components/BackToTop"; // <--- New Import
+import BackToTop from "./components/BackToTop";
 
 export default function Home() {
   return (
     <main className="bg-cream-100 min-h-screen selection:bg-gold selection:text-white">
-      {/* 1. System Components */}
-      {/* <Preloader /> */}
       <Navbar />
       <BackToTop />
-      
-      {/* 2. Content Sections */}
       <div id="hero"><Hero /></div>
       <div id="about"><About /></div>
       <div id="tracks"><Tracks /></div>
