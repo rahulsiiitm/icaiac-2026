@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Manrope } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "./components/AuthProvider";
-import { Analytics } from "@vercel/analytics/react";
- 
+import { Analytics } from "@vercel/analytics/react"; 
+
 const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
+  variable: "--font-serif",
+  display: 'swap',
 });
- 
-// Fixed: was Inter, CSS expects --font-manrope
-const manrope = Manrope({
+
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-manrope",
-  display: "swap",
+  variable: "--font-sans",
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -64,7 +63,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${playfair.variable} ${manrope.variable} bg-charcoal text-white antialiased`}>
+      <body className={`${playfair.variable} ${inter.variable} bg-charcoal text-white antialiased`}>
         {/* Wrap your children in the AuthProvider */}
         <AuthProvider>
           {children}
