@@ -45,11 +45,12 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
-  role          Role      @default(USER) 
-  
-  accounts      Account[]
-  sessions      Session[]
-  registration  Registration? 
+  role          Role      @default(USER)
+
+  accounts            Account[]
+  sessions            Session[]
+  registration        Registration?
+  passwordResetTokens PasswordResetToken[]
 }
 
 model VerificationToken {
@@ -70,38 +71,54 @@ enum Role {
 }
 
 model Registration {
-  id             String   @id @default(cuid())
-  userId         String   @unique
-  category       String   
-  region         String   
-  institution    String?
-  designation    String?
-  phoneNumber    String?
-  
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  category    String
+  region      String
+  institution String?
+  designation String?
+  phoneNumber String?
 
-  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  payment        Payment?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment Payment?
 }
 
 model Payment {
-  id             String   @id @default(cuid())
-  registrationId String   @unique
+  id             String        @id @default(cuid())
+  registrationId String        @unique
   amount         Float
-  currency       String   
+  currency       String
   status         PaymentStatus @default(PENDING)
-  transactionId  String?  @unique 
-  receiptUrl     String?  // Field for ICICI receipt uploads
-  
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  transactionId  String?       @unique
+  receiptUrl     String?
+  rejectionNote  String?
 
-  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  registration Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 }
 
 enum PaymentStatus {
   PENDING
   VERIFIED
   FAILED
+}
+
+// ==========================================
+// 3. PASSWORD RESET
+// ==========================================
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  expires   DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
